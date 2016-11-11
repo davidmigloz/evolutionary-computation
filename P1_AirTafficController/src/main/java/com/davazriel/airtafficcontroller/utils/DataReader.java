@@ -1,4 +1,4 @@
-package com.davazriel.airtafficcontroller.utils;
+package es.ubu.lsi;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -115,9 +115,8 @@ public class DataReader {
 					continue;
 
 				String[] separados = line.split(",");
-				// Al comenzar a leer en 1, saltamos el primer dato (la etiqueta)
-				for(int j=1; j<separados.length; j++){
-					datos[leidas][j-1] = Integer.valueOf(separados[j]).intValue(); // X Value of the interesting point
+				for(int j=0; j<separados.length; j++){
+					datos[leidas][j] = Integer.valueOf(separados[j]).intValue(); // X Value of the interesting point
 				}
 				leidas++;
 			}

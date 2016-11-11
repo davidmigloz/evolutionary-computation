@@ -1,2 +1,3 @@
-# evolutionary-computation
+# Evolutionary computation
+
 Repository for evolutionary computation subject. 
