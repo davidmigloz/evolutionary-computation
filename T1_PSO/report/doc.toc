@@ -1,0 +1,7 @@
+\select@language {spanish}
+\contentsline {section}{\numberline {A}Introducci\IeC {\'o}n}{2}{appendix.Alph1}
+\contentsline {section}{\numberline {B}Historia}{2}{appendix.Alph2}
+\contentsline {section}{\numberline {C}Funcionamiento}{2}{appendix.Alph3}
+\contentsline {section}{\numberline {D}Usos}{2}{appendix.Alph4}
+\contentsline {section}{\numberline {E}Comparaci\IeC {\'o}n}{2}{appendix.Alph5}
+\contentsline {section}{\numberline {F}Conclusiones}{2}{appendix.Alph6}

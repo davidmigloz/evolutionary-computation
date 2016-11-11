@@ -1,0 +1,149 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% P3b MLP
+% David Miguel Lozano
+% Javier Martínez Riberas
+% Universidad de Burgos - Noviembre 2016
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% -------------------------------------------------------------
+% Preamble
+% -------------------------------------------------------------
+\documentclass[a4paper,12pt,titlepage]{article}
+
+% -------------------------------------------------------------
+% Packages
+% -------------------------------------------------------------
+\usepackage[utf8]{inputenc}	% Unicode support
+\usepackage[T1]{fontenc}		% Font encoding
+\usepackage[spanish]{babel}	% Languaje
+\usepackage{lmodern}	% Typeface 
+\usepackage{textcomp} % Special symbols
+\usepackage{graphicx}	% Add pictures
+\usepackage{pgfplots} % Graphs and charts
+\usepackage{hyperref}	% Add a link to index entries
+\usepackage{amsmath}	% Advanced math typesetting
+\usepackage{amsfonts}	% Mathematical formulas
+\usepackage{amssymb}	% Extended symbol collection
+\usepackage{listings}	% Code formatting and highlighting
+\usepackage{xcolor}		% Color package
+\usepackage{enumitem}	% Customizing lists
+\usepackage{parskip}	% Paragraph styles
+\usepackage[a4paper]{geometry} 		% Margins
+\usepackage[numbers,sort]{natbib}	% Bibliography management
+\usepackage{booktabs}							% Tables
+
+% -------------------------------------------------------------
+% Configuration
+% -------------------------------------------------------------
+% Images path
+\graphicspath{ {img/} }
+% Graphs configuration 
+\pgfplotsset{width=\textwidth,compat=1.9}
+% Hyperlinks coloring
+\hypersetup{
+	colorlinks,
+	linkcolor={green!40!black},
+	citecolor={blue!50!black},
+	urlcolor={blue!80!black}
+}
+% Define HRule
+\newcommand{\HRule}[1]{\rule{\linewidth}{#1}}
+% Define listings styles
+\definecolor{codebg}{HTML}{EEEEEE}
+\definecolor{codeframe}{HTML}{CCCCCC}
+\definecolor{comments}{HTML}{009900}
+\lstset{
+  language=Matlab, 								% Programming language 
+  backgroundcolor=\color{codebg},	% Background color
+  frame=single, 									% Add frame around code
+	framesep=10pt,									% Padding
+	rulecolor=\color{codeframe},		% Don't change frame color
+	upquote=true,										%
+	breakatwhitespace=true,					% Break line only in spaces
+	keepspaces=true,								% Keep indentation
+	tabsize=2,											% Tab size
+	title=\lstname, 								% Show filename as caption
+	basicstyle=\ttfamily, 					% Size and font
+  keywordstyle=\color{black}\ttfamily,
+	commentstyle=\color{comments},	% Color of comments
+  morecomment=[l][\color{magenta}]{\#}
+}
+% Define style table
+\setlength{\heavyrulewidth}{1.5pt}
+\setlength{\abovetopsep}{4pt}
+\begin{document}
+% -------------------------------------------------------------
+% Cover
+% -------------------------------------------------------------
+\author{David Miguel Lozano \ Javier Martínez Riberas}
+\title{Optimización por Enjambre (Particle Swarm Optimization)}
+\date{07-11-2016}
+
+\begin{titlepage}
+	\centering
+	\includegraphics[width=0.16\textwidth]{ubu-logo.png}\par
+	\vspace{0.3cm}
+	{\scshape\LARGE Universidad de Burgos \par}
+	\vfill
+	{\scshape\Large Computación Neuronal y Evolutiva \par}
+	\HRule{2pt}
+	{\huge\bfseries Optimización por Enjambre (\textit{Particle Swarm Optimization}) \par}
+	\HRule{2pt}
+	\\ [0.5cm]
+	{TODO resumen.}
+	\vfill
+	Estudiantes:\par
+	{\Large\scshape David Miguel Lozano \\ Javier Martínez Riberas \par}
+	\vfill
+	Profesores de la asignatura:\par
+	\textsc{Álvaro Herrero Cosío \\ Bruno Baruque Zanón}
+	\vfill
+	{\large 1º semestre 2016 \par}
+\end{titlepage}
+
+% -------------------------------------------------------------
+% Contents
+% -------------------------------------------------------------
+\newpage
+\tableofcontents
+\begin{appendix}
+  %\listoffigures
+  %\listoftables
+\end{appendix}
+
+% -------------------------------------------------------------
+% Body
+% -------------------------------------------------------------
+\newpage
+
+\section{Introducción}
+
+TODO
+
+\section{Historia}
+
+TODO Creación y desarrollo.
+
+\section{Funcionamiento}
+
+TODO Cómo y por qué funcionan (realizar algún esquema del funcionamiento).
+
+\section{Usos}
+
+TODO
+
+\section{Comparación}
+
+TODO Comparación con otros algoritmos genéticos (similitudes / diferencias)
+
+\section{Conclusiones}
+
+TODO
+
+% -------------------------------------------------------------
+% Bibliography
+% -------------------------------------------------------------
+\bibliography{citations}
+\bibliographystyle{plainnat}
+
+\end{document}
