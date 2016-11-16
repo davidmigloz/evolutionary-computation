@@ -247,8 +247,8 @@ En las siguientes figuras podemos observar dos instantes consecutivos del algori
 Para visualizar gráficamente el funcionamiento del algoritmo se han grabado dos simulaciones realizadas en Matlab:
 
 \begin{itemize}[noitemsep]
-	\item Simulación 2D: [\href{https://raw.githubusercontent.com/davidmigloz/evolutionary-computation/master/T1_PSO/res/pso_demo_3d.webm}{webm}][\href{https://raw.githubusercontent.com/davidmigloz/evolutionary-computation/master/T1_PSO/res/pso_demo_3d.flv}{flv}]
-	\item Simulación 3D: [\href{https://raw.githubusercontent.com/davidmigloz/evolutionary-computation/master/T1_PSO/res/pso_demo_2d.webm}{webm}][\href{https://raw.githubusercontent.com/davidmigloz/evolutionary-computation/master/T1_PSO/res/pso_demo_2d.flv}{flv}]
+	\item Simulación 2D: [\href{https://raw.githubusercontent.com/davidmigloz/evolutionary-computation/master/T1_PSO/res/pso_demo_2d.webm}{webm}][\href{https://raw.githubusercontent.com/davidmigloz/evolutionary-computation/master/T1_PSO/res/pso_demo_2d.flv}{flv}]
+	\item Simulación 3D: [\href{https://raw.githubusercontent.com/davidmigloz/evolutionary-computation/master/T1_PSO/res/pso_demo_3d.webm}{webm}][\href{https://raw.githubusercontent.com/davidmigloz/evolutionary-computation/master/T1_PSO/res/pso_demo_3d.flv}{flv}]
 \end{itemize}
 
 \newpage
@@ -299,34 +299,35 @@ Además, ha demostrado obtener buenos resultados de una manera más rápida y ba
 
 Por todo lo anterior, PSO ha sido utilizado en infinidad de aplicaciones. A continuación exponemos las más relevantes clasificadas por categorías por orden de popularidad: \citep{Poli2008,Zhang2015}
 
-\subsubsection{Telecomunicaciones}
-
-El campo más popular del PSO son las telecomunicaciones. Su uso por excelencia es el diseño de antenas de telecomunicaciones, de tal forma que optimicen la propagación o la recepción de la señal. Otros usos en este campo son el diseño y optimización de todo tipo de redes de comunicaciones. Por ejemplo, la elección del emplazamiento óptimo de los equipos, la optimización del ancho de banda y la asignación de canales, redes inalámbricas, etc.
-
-\subsubsection{Medicina}
-
-La segunda categoría más popular es biomedicina. En donde se utiliza en aplicaciones muy diversas, desde herramientas para el diagnóstico de Parkinson, diseño de medicamentos, prótesis, clasificación de cánceres, agrupamiento de genes, selección de biomarcadores, etc.
-
-\subsubsection{Inteligencia artificial}
-
-El uso principal de PSO en cuanto a la inteligencia artificial son las redes neuronales, tanto su control y diseño como el entrenamiento.
-PSO se usa tanto en conjunto con las redes neuronales para conseguir modelos con más complejidad aunque también se usa PSO para entrenar las redes neuronales o incluso para diseño y control de las mismas. [se puede recalcar que fue la primera aplicación propuesta]
-
-\subsubsection{Data mining}
+\subsection{Data mining}
 
 Un buen número de aplicaciones están relacionadas con tareas de agrupamiento, clasificación, reducción de la dimensionalidad o selección de características. Que a su vez, pueden ser utilizadas para tareas de predicción como el pronóstico del tiempo, la carga de la red eléctrica, tráfico de vehículos, etc.
 
-\subsubsection{Procesamiento de imagen y sonido}
+\subsection{Inteligencia artificial}
+
+El uso principal de PSO en cuanto a la inteligencia artificial son las redes neuronales, tanto su control y diseño, como el entrenamiento. Fue la primera aplicación propuesta por los autores del PSO. También, se han desarrollado algorítmos híbridos que combinan genéticos y PSO.
+
+\subsection{Medicina}
+
+Otro campo popular es la biomedicina. En donde se utiliza en aplicaciones muy diversas, desde herramientas para el diagnóstico de Parkinson, diseño de medicamentos, prótesis, clasificación de cánceres, agrupamiento de genes, selección de biomarcadores, etc.
+
+\subsection{Operaciones}
+
+Los PSO son ampliamente utilizados en tareas de control y planificación . Como planificaciones óptimas de procesos, calendarios laborales, horarios de trenes, redes eléctricas, etc.
+
+\subsection{Telecomunicaciones}
+
+El campo más popular del PSO son las telecomunicaciones. Su uso por excelencia es el diseño de antenas de telecomunicaciones, de tal forma que optimicen la propagación o la recepción de la señal. Otros usos en este campo son el diseño y optimización de todo tipo de redes de comunicaciones. Por ejemplo, la elección del emplazamiento óptimo de los equipos, la optimización del ancho de banda y la asignación de canales, redes inalámbricas, etc.
+
+\subsection{Procesamiento de imagen y sonido}
 
 Este es uno de los campos donde PSO tiene una gran repercusión. Existen infinidad de aplicaciones desde reconocimiento de caras, iris, peatones, frutas, detección de defectos, clasificación de objetos, reducción de ruido, tracking de objetos, filtros adaptativos, codificación de sonido, gráficos 3D, síntesis de texturas, etc.
 
-\subsubsection{Robótica}
+\subsection{Robótica}
 
 En el campo de la ingeniería eléctrica, electrónica y de automatismos también existe un importante número de artículos relacionados con PSO. Desde diseño digital de circuitos electrónicos tolerantes a fallos, planificación de trayectos, hasta el control y planificación de motores.
 
-\subsubsection{Operaciones}
 
-Los PSO son ampliamente utilizados en tareas de control y planificación . Como planificaciones óptimas de procesos, calendarios laborales, horarios de trenes, etc.
 
 
 \section{Comparación}
@@ -362,18 +363,12 @@ En este trabajo se ha introducido el método de optimización por enjambre de pa
 
 Como todos los métodos de optimización, PSO posee una serie de ventajas e inconvenientes. Es un algoritmo simple, con un número reducido de parámetros, puede optimizar funciones no derivables y es eficiente en un gran número de casos. Por otro lado, en su versión original, puede quedarse atrapado en mínimos locales, su complejidad computacional es algo elevada y su rendimiento es muy sensible a la parametrización escogida.
 
-Desde su aparición, PSO ha sido utilizado en numerosas aplicaciones pertenecientes a disciplinas científicas muy diferentes. Desde su primera aplicación para en entrenamiento de redes neuronales, hasta la síntesis de medicamentos en medicina, optimización de las redes de comunicaciones y eléctricas, planificación de calendarios laborales o métodos de visión artificial. 
+PSO ha sido utilizado en numerosas aplicaciones pertenecientes a disciplinas científicas muy diferentes. Desde su primera aplicación para en entrenamiento de redes neuronales, hasta la síntesis de medicamentos en medicina, optimización de las redes de comunicaciones y eléctricas, planificación de calendarios laborales o métodos de visión artificial.
 
-El futuro parece prometedor bajo nuestro punto de vista, ya que la cantidad de aplicaciones para las que se está usando PSO es muy grande y el conjunto de algoritmos de inteligencia de enjambre son todavía jóvenes (~1993). Otros algoritmos parecidos como los genéticos (~1971) son más antiguos y han tenido más tiempo para ser investigados.
+Desde su aparición, la investigación del PSO creció de forma exponencial hasta el año 2009, llegando a publicarse más de 2.000 artículos en un año. Actualmente, la investigación se ha estabilizado, pero sigue habiendo un gran interés en la materia.
 
-Este futuro quizá se vea nublado por el hecho de que no sobresalgan en una ‘familia’ de problemas concretos y haya otros algoritmos más establecidos.
-
-Por esto puede que  necesiten un claro ejemplo en el que superen al resto de algoritmos existentes con creces para conseguir el reconocimiento y atención necesarios para ser ampliamente conocidos y estudiados en los ámbitos en los que más atención se les va a dar como puede ser el académico.
-
-Cabe destacar que se está realizando gran cantidad de investigación en estos algoritmos como se puede ver en la gráfica.
-
-Queríamos comentar que la investigación de PSO se ha estabilizado o al menos eso parece y  esperamos que madure, para que acabe produciendo los resultados anteriormente mencionados para el progreso de la investigación.
-
+Teniendo en cuenta lo anterior, podemos afirmar que PSO está todavía en una fase joven y que le queda bastante camino por recorrer. Como hemos visto, existen varias líneas de investigación a día de hoy, y varias de ellas parecen prometedoras. El tiempo dirá si PSO consigue establecerse como algoritmo de referencia en algún campo en concreto.
+	
 \begin{tikzpicture}
 \begin{axis}[
 	xticklabel style = {font=\tiny},
@@ -387,7 +382,7 @@ Queríamos comentar que la investigación de PSO se ha estabilizado o al menos e
 	ybar interval=0.7,
 ]
 \addplot 
-	coordinates {(1995, 5)(1996, 0)(1997, 3)(1998, 7)(1999, 11)(2000, 13)(2001, 18)(2002, 78)(2003, 109)(2004, 240)(2005, 350)(2006, 676)(2007, 886)(2008, 1382)(2009, 1945)(2010, 2174)(2011, 1674)(2012, 1677)(2013, 1557)(2014, 1674)(2015, 1792)};
+	coordinates {(1995, 5)(1996, 0)(1997, 3)(1998, 7)(1999, 11)(2000, 13)(2001, 18)(2002, 78)(2003, 109)(2004, 240)(2005, 350)(2006, 676)(2007, 886)(2008, 1382)(2009, 1945)(2010, 2174)(2011, 1674)(2012, 1677)(2013, 1557)(2014, 1674)(2015, 1729)(2016, 0)};
 \end{axis}
 \end{tikzpicture}
 
