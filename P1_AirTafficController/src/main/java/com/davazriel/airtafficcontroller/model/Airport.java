@@ -11,6 +11,7 @@ public class Airport {
         for (int i = 0; i < numRunways; i++) {
             runways[i] = new Runway();
          }
+        // Get waiting times
         this.waitingTimes = waitingTimes;
     }
 
