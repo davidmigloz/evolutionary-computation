@@ -1,15 +1,22 @@
 package com.davazriel.airtafficcontroller.model;
 
+import java.util.Arrays;
+
+/**
+ * Flight.
+ */
 public class Flight {
 
     private int id;
     private PlaneType type;
-    private int[] eta;
+    private int[] runwayETAs;
+    private int ATA;
+    private Runway assignedRunway;
 
-    public Flight(int id, PlaneType type, int[] eta) {
+    public Flight(int id, PlaneType type, int[] runwayETAs) {
         this.id = id;
         this.type = type;
-        this.eta = eta;
+        this.runwayETAs = runwayETAs;
     }
 
     public int getId() {
@@ -20,8 +27,22 @@ public class Flight {
         return type;
     }
 
-    public int getEta(int trackNumber) {
-        return eta[trackNumber];
+    public int getETA(int runwayId) {
+        return runwayETAs[runwayId];
+    }
+
+    public void setATA(int ATA) {
+        this.ATA = ATA;
+    }
+
+    public void setAssignedRunway(Runway assignedRunway) {
+        this.assignedRunway = assignedRunway;
+    }
+
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    public int getDelay() {
+        int minETA = Arrays.stream(runwayETAs).min().getAsInt();
+        return ATA - minETA;
     }
 
     public enum PlaneType {
