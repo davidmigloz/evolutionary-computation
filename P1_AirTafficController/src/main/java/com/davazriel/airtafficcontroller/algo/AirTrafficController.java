@@ -1,4 +1,4 @@
-package com.davazriel.airtafficcontroller;
+package com.davazriel.airtafficcontroller.algo;
 
 import net.sf.jclec.IConfigure;
 import net.sf.jclec.IFitness;
@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import net.sf.jclec.orderarray.OrderArrayIndividual;
 import org.apache.commons.configuration.Configuration;
 
 public class AirTrafficController extends AbstractEvaluator implements IConfigure {
@@ -80,7 +81,6 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 		public void addArrival(Plane plane) {
 			int track = nextFreeTrack(plane.getType());
 			tracks.get(track).addLanding(plane.type, plane.getArrivalForTrack(track));
-			;
 		}
 
 		private int nextFreeTrack(int planeType) {
