@@ -28,9 +28,9 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 	private int n_runways;
 
 	private int[][] waitTimes;
-	
+
 	private List<Flight> flights;
-	
+
 	public AirTrafficController() {
 		super();
 		flights = new ArrayList<>();
@@ -53,31 +53,35 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 		if (comparator == null) {
 			comparator = new ValueFitnessComparator(MINIMIZE);
 		}
-        return comparator;
+		return comparator;
 	}
 
 	@Override
 	public void configure(Configuration conf) {
 		String waitTimesFileName = conf.getString("[@wait-times-file]");
 		String flightsFileName = conf.getString("[@flights-file]");
-		n_runways = conf.getInt("[@runways]");
-		
+		String[] flightString = null;
+		int n_flights = 0;
+
 		DataReader waitTimesDataReader = new DataReader();
 		waitTimesDataReader.openFile(waitTimesFileName);
 		waitTimes = waitTimesDataReader.readMatrix(3, 3);
 		waitTimesDataReader.closeFile();
-		
+
 		DataReader flightsDataReader = new DataReader();
 		flightsDataReader.openFile(flightsFileName);
-		while(flightsDataReader.ready()){
-			String[] flightString = flightsDataReader.readLine();
-			int[] runwayETAs = new int[flightString.length-2];
-			for(int i = 2; i < flightString.length; i++ ){
-				runwayETAs[i-2] = Integer.valueOf(flightString[i]);
+		while (flightsDataReader.ready()) {
+			flightString = flightsDataReader.readLine();
+			int[] runwayETAs = new int[flightString.length - 2];
+			for (int i = 2; i < flightString.length; i++) {
+				runwayETAs[i - 2] = Integer.valueOf(flightString[i]);
 			}
 			flights.add(new Flight(flightString[0], Flight.PlaneType.valueOf(flightString[1]), runwayETAs));
+			n_flights++;
 		}
 		flightsDataReader.closeFile();
+
+		n_runways = flightString.length - 2;
 		
 	}
 }
