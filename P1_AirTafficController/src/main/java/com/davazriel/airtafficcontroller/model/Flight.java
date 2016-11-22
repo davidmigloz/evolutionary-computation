@@ -61,4 +61,8 @@ public class Flight {
             return index;
         }
     }
+    
+    public Flight copy(){
+    	return new Flight(id, type, runwayETAs);
+    }
 }

@@ -44,9 +44,8 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 		int[] genotype = ((OrderArrayIndividual) ind).getGenotype();
 		Airport airport = new Airport(n_runways, waitTimes);
 		for (int individual : genotype) {
-			// TODO inicializar flight correctamente
-			Flight flight = new Flight(0, null, null);
-			airport.scheduleFlight(flight);
+			Flight flight = flights.get(individual);
+			airport.scheduleFlight(flight.copy());
 		}
 		ind.setFitness(new SimpleValueFitness(airport.getAccumulatedDelay()));
 	}
@@ -74,14 +73,11 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 		flightsDataReader.openFile(flightsFileName);
 		while(flightsDataReader.ready()){
 			String[] flightString = flightsDataReader.readLine();
-			// TODO plane type conversion.
-			// TODO consider if list<flight> is the better idea.
 			int[] runwayETAs = new int[flightString.length-2];
 			for(int i = 2; i < flightString.length; i++ ){
 				runwayETAs[i-2] = Integer.valueOf(flightString[i]);
 			}
-			
-			flights.add(new Flight(flightString[0], type, runwayETAs));
+			flights.add(new Flight(Integer.valueOf(flightString[0]), Flight.PlaneType.valueOf(flightString[1]), runwayETAs));
 		}
 		flightsDataReader.closeFile();
 		
