@@ -38,6 +38,10 @@ public class Flight {
     public void setAssignedRunway(Runway assignedRunway) {
         this.assignedRunway = assignedRunway;
     }
+    
+    public Runway getAssignedRunway(){
+    	return assignedRunway;
+    }
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     public int getDelay() {
