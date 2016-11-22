@@ -3,20 +3,18 @@ package com.davazriel.airtafficcontroller.algo;
 import com.davazriel.airtafficcontroller.model.Airport;
 import com.davazriel.airtafficcontroller.model.Flight;
 import com.davazriel.airtafficcontroller.utils.DataReader;
-
 import net.sf.jclec.IConfigure;
 import net.sf.jclec.IFitness;
 import net.sf.jclec.IIndividual;
 import net.sf.jclec.base.AbstractEvaluator;
 import net.sf.jclec.fitness.SimpleValueFitness;
 import net.sf.jclec.fitness.ValueFitnessComparator;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
 import net.sf.jclec.orderarray.OrderArrayIndividual;
 import org.apache.commons.configuration.Configuration;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.ArrayList;
 
 public class AirTrafficController extends AbstractEvaluator implements IConfigure {
 
@@ -32,7 +30,6 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 	private int[][] waitTimes;
 	
 	private List<Flight> flights;
-
 	
 	public AirTrafficController() {
 		super();
@@ -56,7 +53,7 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 		if (comparator == null) {
 			comparator = new ValueFitnessComparator(MINIMIZE);
 		}
-		return comparator;
+        return comparator;
 	}
 
 	@Override
