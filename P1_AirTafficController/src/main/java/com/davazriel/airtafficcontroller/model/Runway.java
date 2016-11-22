@@ -35,7 +35,7 @@ public class Runway {
     }
 
     public int getNextTimeRunwayAvailable(Flight.PlaneType planeType) {
-        return planeType == null ? currentATA : currentATA + airport.getWaitingTime(currentPlaneType, planeType);
+        return currentPlaneType == null ? currentATA : currentATA + airport.getWaitingTime(currentPlaneType, planeType);
     }
 
     public void addArrival(Flight flight) {

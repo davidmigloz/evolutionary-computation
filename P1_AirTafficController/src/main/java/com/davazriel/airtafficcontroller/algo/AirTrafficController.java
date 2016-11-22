@@ -11,7 +11,7 @@ import net.sf.jclec.base.AbstractEvaluator;
 import net.sf.jclec.fitness.SimpleValueFitness;
 import net.sf.jclec.fitness.ValueFitnessComparator;
 
-import java.io.File;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -36,6 +36,7 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 	
 	public AirTrafficController() {
 		super();
+		flights = new ArrayList<>();
 	}
 
 	@Override
@@ -77,7 +78,7 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 			for(int i = 2; i < flightString.length; i++ ){
 				runwayETAs[i-2] = Integer.valueOf(flightString[i]);
 			}
-			flights.add(new Flight(Integer.valueOf(flightString[0]), Flight.PlaneType.valueOf(flightString[1]), runwayETAs));
+			flights.add(new Flight(flightString[0], Flight.PlaneType.valueOf(flightString[1]), runwayETAs));
 		}
 		flightsDataReader.closeFile();
 		

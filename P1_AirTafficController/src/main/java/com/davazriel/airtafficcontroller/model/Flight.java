@@ -7,19 +7,19 @@ import java.util.Arrays;
  */
 public class Flight {
 
-    private int id;
+    private String id;
     private PlaneType type;
     private int[] runwayETAs;
     private int ATA;
     private Runway assignedRunway;
 
-    public Flight(int id, PlaneType type, int[] runwayETAs) {
+    public Flight(String id, PlaneType type, int[] runwayETAs) {
         this.id = id;
         this.type = type;
         this.runwayETAs = runwayETAs;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
