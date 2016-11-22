@@ -1,0 +1,225 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% P3b MLP
+% David Miguel Lozano
+% Javier Martínez Riberas
+% Universidad de Burgos - Noviembre 2016
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% -------------------------------------------------------------
+% Preamble
+% -------------------------------------------------------------
+\documentclass[a4paper,12pt,titlepage]{article}
+
+% -------------------------------------------------------------
+% Packages
+% -------------------------------------------------------------
+\usepackage[utf8]{inputenc}	% Unicode support
+\usepackage[T1]{fontenc}		% Font encoding
+\usepackage[spanish]{babel}	% Languaje
+\usepackage{lmodern}	% Typeface 
+\usepackage{textcomp} % Special symbols
+\usepackage{graphicx}	% Add pictures
+\usepackage{pgfplots} % Graphs and charts
+\usepackage{hyperref}	% Add a link to index entries
+\usepackage{amsmath}	% Advanced math typesetting
+\usepackage{amsfonts}	% Mathematical formulas
+\usepackage{amssymb}	% Extended symbol collection
+\usepackage{listings}	% Code formatting and highlighting
+\usepackage{xcolor}		% Color package
+\usepackage{enumitem}	% Customizing lists
+\usepackage{parskip}	% Paragraph styles
+\usepackage[a4paper]{geometry} 		% Margins
+\usepackage[numbers,sort]{natbib}	% Bibliography management
+\usepackage{booktabs}							% Tables
+
+% -------------------------------------------------------------
+% Configuration
+% -------------------------------------------------------------
+% Images path
+\graphicspath{ {img/} }
+% Graphs configuration 
+\pgfplotsset{width=\textwidth,compat=1.9}
+% Hyperlinks coloring
+\hypersetup{
+	colorlinks,
+	linkcolor={green!40!black},
+	citecolor={blue!50!black},
+	urlcolor={blue!80!black}
+}
+% Define HRule
+\newcommand{\HRule}[1]{\rule{\linewidth}{#1}}
+% Define listings styles
+\definecolor{codebg}{HTML}{EEEEEE}
+\definecolor{codeframe}{HTML}{CCCCCC}
+\definecolor{comments}{HTML}{009900}
+\lstset{
+  language=Matlab, 								% Programming language 
+  backgroundcolor=\color{codebg},	% Background color
+  frame=single, 									% Add frame around code
+	framesep=10pt,									% Padding
+	rulecolor=\color{codeframe},		% Don't change frame color
+	upquote=true,										%
+	breakatwhitespace=true,					% Break line only in spaces
+	keepspaces=true,								% Keep indentation
+	tabsize=2,											% Tab size
+	title=\lstname, 								% Show filename as caption
+	basicstyle=\ttfamily, 					% Size and font
+  keywordstyle=\color{black}\ttfamily,
+	commentstyle=\color{comments},	% Color of comments
+  morecomment=[l][\color{magenta}]{\#}
+}
+% Define style table
+\setlength{\heavyrulewidth}{1.5pt}
+\setlength{\abovetopsep}{4pt}
+\begin{document}
+% -------------------------------------------------------------
+% Cover
+% -------------------------------------------------------------
+\author{David Miguel Lozano \ Javier Martínez Riberas}
+\title{P3 Multilayer Perceptron (MLP)}
+\date{07-11-2016}
+
+\begin{titlepage}
+	\centering
+	\includegraphics[width=0.16\textwidth]{ubu-logo.png}\par
+	\vspace{0.3cm}
+	{\scshape\LARGE Universidad de Burgos \par}
+	\vfill
+	{\scshape\Large Computación Neuronal y Evolutiva \par}
+	\HRule{2pt}
+	{\huge\bfseries P4: AirTafficController \par}
+	\HRule{2pt}
+	\\ [0.5cm]
+	{Analizar y desarrollar un algoritmo genético que realice el cálculo automático de la distribución más conveniente de vuelos que solicitan aterrizar en un determinado aeropuerto.}
+	\vfill
+	Estudiantes:\par
+	{\Large\scshape David Miguel Lozano \\ Javier Martínez Riberas \par}
+	\vfill
+	Profesor de la asignatura:\par
+	\textsc{Bruno Baruque Zanón}
+	\vfill
+	{\large 1º semestre 2016 \par}
+\end{titlepage}
+
+% -------------------------------------------------------------
+% Contents
+% -------------------------------------------------------------
+\newpage
+\tableofcontents
+\begin{appendix}
+  %\listoffigures
+  %\listoftables
+\end{appendix}
+
+% -------------------------------------------------------------
+% Body
+% -------------------------------------------------------------
+\newpage
+
+\section{Introducción}
+
+El objetivo de esta práctica es desarollar un programa que implemente un algoritmo genético que permita al usuario realizar el calculo automático de la distribución
+más conveniente de vuelos que solicitan aterrizar en un determinado aeropuerto. Así mismo, se analizará la conveniencia de la solución propuesta y se reflexionará sobre los resultados obtenidos.
+
+La aplicación tiene que ser capáz de adaptarse a las siguientes condiciones:
+
+\begin{itemize}[noitemsep]
+	\item El número de pistas del aeropuerto debe ser un parámetro configurable.
+	\item El número de aviones en cada situación puede variar.
+	\item Los aviones tienen un programa de vuelo que incluye:
+	\begin{itemize}[noitemsep]
+		\item ETA (\textit{Estimated Time of Arrival}): tiempo estimado de llegada calculado en el momento del despegue.
+		\item Tipo de avión: heavy / big / small. Condiciona el tiempo necesario para su aterrizaje.
+	\end{itemize}
+\end{itemize}
+
+El programa tiene que conseguir obtener de forma automática la mejor asignación posible de vuelos a aterrizar en cada pista, de forma que el tiempo de espera de los vuelos en su conjunto sea el menor posible.
+
+Para su resolución se hará uso de la librería para Java JCLEC (Java Class Library for Evolutionary Computation) \citep{web:jclec}. La cual, proporciona un framework para programación evolutiva que da soporte, entre otras cosas, a los algoritmos genéticos.
+
+\section{Solución propuesta}
+
+A continuación se detalla la codificación y configuración del problema para ser resuelto con un algoritmo genético.
+
+\subsection{Representación de los individuos}
+
+Cada individuo representa los diferentes aviones que desean aterrizar en el aeropuerto en una situación determinada. Cada individuo se ha codificado como un genotipo binario, su longitud es igual al número de aviones y está ordenado de acuerdo al orden de aterrizaje. 
+
+Por ejemplo, dado el siguiente genotipo:
+
+\begin{center}
+$
+\begin{bmatrix}
+	2 & 3 & 1 & 4
+\end{bmatrix}
+$
+\end{center}
+
+Se representa que el primer vuelo en aterrizar fue el 2, seguido del 3, 1 y 4.
+
+\subsection{Individuos no factibles}
+
+Los individuos que no cumplen los requisitos son tratados en la fase de evaluación, donde se les valora negativamente el fitness. De esta manera, nos aseguramos que no forman parte de la siguiente generación.
+
+\subsection{Esquema evolutivo}
+
+Se ha utilizado el algoritmo SGE (\textit{Simple Generational and Elitist}). Se trata de un algoritmo elitista que asegura que sólo los mejores individuos pasen a la siguiente generación en cualquier momento.
+
+\subsection{Función de fitness}
+
+La función de fitness se ha calculado el sumatorio de los retrasos de todos los vuelos. Entendiendo por retraso la diferencia entre el ATA de cada avión y su mínimo ETA.
+
+\subsection{Inicialización}
+
+La población inicial se inicializa de forma aleatoria.
+
+\subsection{Criterio de parada}
+
+El criterio de parada se ha establecido en 1.000 generaciones.
+
+\subsection{Criterio de selección}
+
+Para seleccionar un subconjunto de la población se han analizado los siguientes algoritmos:
+
+\begin{enumerate}[noitemsep]
+	\item \textbf{RouletteSelector}: selección por ruleta.
+\end{enumerate}
+
+\subsection{Operador de cruce}
+
+Para obtener un nuevo individuo basado en el genotipo de sus padres se han analizado los siguientes algoritmos:
+
+\begin{enumerate}[noitemsep]
+	\item \textbf{OnePointCrossover}: cruce monopunto.
+\end{enumerate}
+
+\subsection{Operador de mutación}
+
+Cada gen del genotipo de un individuo tiene una cierta probabilidad de mutar. Se han analizado los siguientes algoritmos de mutación:
+
+\begin{enumerate}[noitemsep]
+	\item \textbf{OneLocusMutator}: TODO.
+\end{enumerate}
+
+\subsection{Criterio de reemplazo}
+
+Los hijos reemplazan directamente a los padres. Para preservar el elitismo, si la mejor sulución de la generación anterior no sobrevive, la peor solución se reemplaza por una nueva.
+
+\section{Análisis}
+
+A continuación exponemos los resultados obtenidos y realizamos un análisis de estos.
+
+TODO
+
+\section{Conclusiones}
+
+TODO
+
+% -------------------------------------------------------------
+% Bibliography
+% -------------------------------------------------------------
+\newpage
+\bibliography{citations}
+\bibliographystyle{plainnat}
+
+\end{document}
