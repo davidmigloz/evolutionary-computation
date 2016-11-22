@@ -34,6 +34,11 @@
 # IntelliJ
 /out/
 
+# Eclipse random files
+.classpath
+.project
+.settings
+
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
