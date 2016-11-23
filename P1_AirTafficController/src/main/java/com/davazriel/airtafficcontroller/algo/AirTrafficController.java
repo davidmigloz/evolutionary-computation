@@ -31,6 +31,9 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 
 	private List<Flight> flights;
 
+	private String flightsFile;
+	private String waitTimesFileName;
+
 	public AirTrafficController() {
 		super();
 		flights = new ArrayList<>();
@@ -58,8 +61,8 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 
 	@Override
 	public void configure(Configuration conf) {
-		String waitTimesFileName = conf.getString("[@wait-times-file]");
-		String flightsFileName = conf.getString("[@flights-file]");
+		this.waitTimesFileName = conf.getString("[@wait-times-file]");
+		this.flightsFile = conf.getString("[@flights-file]");
 		String[] flightString = null;
 		int n_flights = 0;
 
@@ -69,7 +72,7 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 		waitTimesDataReader.closeFile();
 
 		DataReader flightsDataReader = new DataReader();
-		flightsDataReader.openFile(flightsFileName);
+		flightsDataReader.openFile(flightsFile);
 		while (flightsDataReader.ready()) {
 			flightString = flightsDataReader.readLine();
 			int[] runwayETAs = new int[flightString.length - 2];
@@ -82,6 +85,23 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 		flightsDataReader.closeFile();
 
 		n_runways = flightString.length - 2;
-		
+		System.out.println("");
+		System.out.println("*******n_runways: " + n_runways);
+	}
+
+	public String getFlightsFile() {
+		return flightsFile;
+	}
+
+	public void setFlightsFile(String flightsFile) {
+		this.flightsFile = flightsFile;
+	}
+
+	public String getWaitTimesFileName() {
+		return waitTimesFileName;
+	}
+
+	public void setWaitTimesFileName(String waitTimesFileName) {
+		this.waitTimesFileName = waitTimesFileName;
 	}
 }
