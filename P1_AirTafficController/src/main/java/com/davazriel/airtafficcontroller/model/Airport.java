@@ -1,6 +1,7 @@
 package com.davazriel.airtafficcontroller.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -56,5 +57,9 @@ public class Airport {
             total += flight.getDelay();
         }
         return total;
+    }
+
+    public int getMaxATA() {
+        return Arrays.stream(runways).mapToInt(Runway::getCurrentATA).min().getAsInt();
     }
 }

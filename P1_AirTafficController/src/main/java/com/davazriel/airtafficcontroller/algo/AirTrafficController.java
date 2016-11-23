@@ -44,11 +44,14 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 		// Individual genotype
 		int[] genotype = ((OrderArrayIndividual) ind).getGenotype();
 		Airport airport = new Airport(n_runways, waitTimes);
-		for (int individual : genotype) {
-			Flight flight = flights.get(individual);
-			airport.scheduleFlight(flight.copy());
+		Flight[] scheduleFlights = new Flight[genotype.length];
+		for (int i = 0; i < genotype.length; i++) {
+			scheduleFlights[genotype[i]] = flights.get(i);
 		}
-		ind.setFitness(new SimpleValueFitness(airport.getAccumulatedDelay()));
+		for (Flight scheduleFlight : scheduleFlights) {
+			airport.scheduleFlight(scheduleFlight);
+		}
+		ind.setFitness(new SimpleValueFitness(airport.getMaxATA()));
 	}
 
 	@Override
