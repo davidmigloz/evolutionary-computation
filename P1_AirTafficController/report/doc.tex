@@ -484,11 +484,27 @@ Probabilidad & Mejor & Peor & Medio & Último aterrizaje \\ \midrule
 \end{figure}
 
 \subsection{Análisis}
+Como se ha podido ver a lo largo de toda la sección ha habido algún punto en el que no hemos sido capaces de elegir lo mejor para que el algoritmo fuera capaz de ir mejorando los individuos con las generaciones. 
+
+
+Principalmente nos parece que el orderarray que usamos puede no ser la mejor opción a la hora del cruce, esto se debe a que dos padres con buena fitness se pueden producir dos individuos no tan buenos.
+
+Por ejemplo, si se hubiesen cruzado los siguientes individuos
+genotype = (5 10 17 16 11 19 20 13 14 22 18 7 9 4 1 3 12 21 8 6 2 15 0 23), fitness =[value=222.0]
+genotype = (16 22 19 8 10 12 2 4 1 9 5 3 7 0 11 14 6 15 20 21 17 13 18 23), fitness =[value=237.0]
+
+El resultado podría haber sido perfectamente el siguiente (Es un cruce real pero no se sabe si se dio en las pruebas):
+(8 10 17 16 11 19 20 13 14 22 18 12 2 4 1 9 5 3 7 0 6 15 21 23), fitness = 216
+(17 22 19 8 10 12 2 4 1 9 5 16 11 20 13 14 18 7 3 21 6 15 0 23), fitness = 251
+
+Como podemos ver es cierto que ha mejorado la fitness de uno de los individuos respecto a la del mejor padre, pero tambien es cierto que la de el otro hijo a empeorado bastante. Tambien podemos ver que la media a empeorado desde 229.5 hasta 233.5.
+
+ 
 
 TODO
 
 \section{Conclusiones}
-
+SE HA DESCUBIERTO UN BUG CON EL GENERADOR ALEATORIO DE ORDERARRAY, SIEMPRE QUE GENERA UN ARRAY LA ULTIMA POSICION VALE ARRAY.LENGTH - 1  
 TODO
 
 % -------------------------------------------------------------
