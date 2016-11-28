@@ -5,8 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Clase Airport. Sirve para modelar el aeropuerto, sus pistas, tiempos de
- * espera y vuelos entrantes.
+ * Modela un aeropuerto.
  */
 public class Airport {
 
@@ -15,10 +14,10 @@ public class Airport {
 	private List<Flight> flights;
 
 	/**
-	 * Al construirlo le damos el numero de pistas y los tiempos de espera.
+	 * Constructor del aeropuerto.
 	 * 
-	 * @param numRunways
-	 * @param waitingTimes
+	 * @param numRunways numero de pistas.
+	 * @param waitingTimes tiempos de espera.
 	 */
 	public Airport(int numRunways, int[][] waitingTimes) {
 		flights = new ArrayList<>();
@@ -32,9 +31,9 @@ public class Airport {
 	}
 
 	/**
-	 * Añadimos un vuelo a llegadas como siguiente en la pista más rapida.
+	 * Planifica un vuelo. Asignándole la pista que le permita aterrizar lo antes posible.
 	 * 
-	 * @param flight
+	 * @param flight vuelo.
 	 */
 	public void scheduleFlight(Flight flight) {
 		// Find runway with lowest time for landing
@@ -46,10 +45,10 @@ public class Airport {
 	}
 
 	/**
-	 * Devolvemos la pista con menor tiempo de espera para el avion en concreto.
+	 * Devuelve la pista con el menor tiempo de espera para el avión en concreto.
 	 * 
-	 * @param planeType
-	 * @return
+	 * @param planeType tipo de avión.
+	 * @return mejor pista.
 	 */
 	private Runway findBestRunway(Flight.PlaneType planeType) {
 		Runway bestRunway = null;
@@ -66,20 +65,20 @@ public class Airport {
 	}
 
 	/**
-	 * Calculamos lo que tiene que esperar un avion de un tipo hasta poder
-	 * aterrizar tras que otro haya aterrizado antes.
+	 * Calcula lo que tiene que esperar un avión de un determinado tipo hasta poder
+	 * aterrizar dependiendo del avión que haya aterrizado delante de él.
 	 * 
-	 * @param before Primer avion en aterrizar.
-	 * @param after Segundo avion en aterrizar.
-	 * @return Tiempo que el segundo tiene que esperar.
+	 * @param before primer avión en aterrizar.
+	 * @param after segundo avión en aterrizar.
+	 * @return tiempo que el segundo tiene que esperar.
 	 */
 	public int getWaitingTime(Flight.PlaneType before, Flight.PlaneType after) {
 		return waitingTimes[before.getIndex()][after.getIndex()];
 	}
 
 	/**
-	 * Calculamos y devolvemos el sumatorio de todos los ATA-min(ETAs)
-	 * @return 
+	 * Calcula el retraso acumulado (sumatorio de todos los ATA-min(ETAs)).
+	 * @return retraso acumulado.
 	 */
 	public int getAccumulatedDelay() {
 		int total = 0;
@@ -90,10 +89,11 @@ public class Airport {
 	}
 
 	/**
-	 * Devolvemos en que momento llega el ultimo vuelo (ultimo ATA)
-	 * @return
+	 * Devuelve el ATA del último vuelo.
+	 * @return ATA máximo.
 	 */
-	public int getMaxATA() {
+	@SuppressWarnings("OptionalGetWithoutIsPresent")
+    public int getMaxATA() {
 		return Arrays.stream(runways).mapToInt(Runway::getCurrentATA).min().getAsInt();
 	}
 }

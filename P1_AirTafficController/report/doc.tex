@@ -143,9 +143,16 @@ A continuación se detalla la codificación y configuración del problema para s
 
 \subsection{Representación de los individuos}
 
-Cada individuo representa los diferentes aviones que desean aterrizar en el aeropuerto en una situación determinada. Cada individuo se ha codificado como un genotipo binario, su longitud es igual al número de aviones y está ordenado de acuerdo al orden de aterrizaje. 
+Para representar los individuos se ha utilizado un array de enteros ordenado (\lstinline|OrderArrayIndividual|). Se probaron dos representaciones diferentes, en ambas cada posición del array representaba un avión, pero el ordenamiento era distinto:
 
-Por ejemplo, dado el siguiente genotipo:
+\begin{enumerate}[noitemsep]
+	\item Array ordenado por orden de llegada. De tal manera, que la primera posición se correspondía con el primer avión en llegar. Y el valor de cada posición indicaba el número del avión.
+	\item Array ordenado por número de avión. De tal manera, que la primera posición se correspondía con el avión número uno. Y el valor de cada posición indicaba la posición de llegada del avión.
+\end{enumerate}
+
+Tras realizar pruebas, se vió que los resultados eran muy similares. Por lo que se eligió la representación 1 para realizar el estudio.
+
+Ejemplo de genotipo:
 
 \begin{center}
 $
@@ -155,23 +162,26 @@ $
 $
 \end{center}
 
-Se representa que el primer vuelo en aterrizar fue el 2, seguido del 3, 1 y 4.
-
-\subsection{Individuos no factibles}
-
-Los individuos que no cumplen los requisitos son tratados en la fase de evaluación, donde se les valora negativamente el fitness. De esta manera, nos aseguramos que no forman parte de la siguiente generación.
+Representa que el primer vuelo en aterrizar fue el 2, seguido del 3, 1 y 4.
 
 \subsection{Esquema evolutivo}
 
-Se ha utilizado el algoritmo SGE (\textit{Simple Generational and Elitist}). Se trata de un algoritmo elitista que asegura que sólo los mejores individuos pasen a la siguiente generación en cualquier momento.
+Se ha utilizado el algoritmo SGE (\textit{Simple Generational and Elitist}). Se trata de un algoritmo elitista que asegura que, en cualquier momento, sólo los mejores individuos pasen a la siguiente generación \citep{jclec:sge}.
 
 \subsection{Función de fitness}
 
-La función de fitness se ha calculado el sumatorio de los retrasos de todos los vuelos. Entendiendo por retraso la diferencia entre el ATA de cada avión y su mínimo ETA.
+Para evaluar los individuos, como el genotipo se encontraba ordenado por orden de llegada, se iba iterando sobre él y planificando cada vuelo. La asignación de la pista se realizaba minimizando el ATA, de tal forma, que se asignaba la primera pista que quedase libre. Por último, el cálculo del fitness se realizó de dos maneras:
+
+\begin{enumerate}[noitemsep]
+	\item Minimizando el retraso acumulado. Es decir, el sumatorio de la diferencia entre el ATA y el mínimo ETA de cada avión.
+	\item Minimizando el instante de llegada del último aterrizaje.
+\end{enumerate}
+
+Se compararon ambos métodos y se vió que arrojaban resultados similares. Sin embargo, el método 2 tenía una varianza mucho más grande que el 1. Por este motivo, se eligió el método 1 para el estudio.
 
 \subsection{Inicialización}
 
-La población inicial se inicializa de forma aleatoria.
+La población inicial se inicializa de forma aleatoria. Se ha utilizado el generador \lstinline|Ranecu|, se trata de un generador lineal congruencial avanzado con un periodo aproximado de $10^18$ \citep{jclec:ranecu}.
 
 \subsection{Criterio de parada}
 
@@ -182,7 +192,8 @@ El criterio de parada se ha establecido en 1.000 generaciones.
 Para seleccionar un subconjunto de la población se han analizado los siguientes algoritmos:
 
 \begin{enumerate}[noitemsep]
-	\item \textbf{RouletteSelector}: selección por ruleta.
+	\item \lstinline|RouletteSelector|: selección por ruleta \citep{jclec:roulette}.
+	\item \lstinline|RandomSelector|: selección aleatoria \citep{jclec:random}.
 \end{enumerate}
 
 \subsection{Operador de cruce}
@@ -190,24 +201,289 @@ Para seleccionar un subconjunto de la población se han analizado los siguientes
 Para obtener un nuevo individuo basado en el genotipo de sus padres se han analizado los siguientes algoritmos:
 
 \begin{enumerate}[noitemsep]
-	\item \textbf{OnePointCrossover}: cruce monopunto.
+	\item \lstinline|OrderOXCrossover|: OX Crossover. 
+	\item \lstinline|OrderPMXCrossover|: PMX Crossover.
 \end{enumerate}
+
+La probabilidad de cruce se estableció en un 75\%.
 
 \subsection{Operador de mutación}
 
-Cada gen del genotipo de un individuo tiene una cierta probabilidad de mutar. Se han analizado los siguientes algoritmos de mutación:
+Cada gen del genotipo de un individuo tiene 3\% de probabilidad de mutar. Se han analizado los siguientes algoritmos de mutación:
 
 \begin{enumerate}[noitemsep]
-	\item \textbf{OneLocusMutator}: TODO.
+	\item \lstinline|Order2OptMutator|: mutación 2-opt del genotipo.
+	\item \lstinline|OrderSublistMutator|: mutación de una sublista del genotipo aleatoriamente.
 \end{enumerate}
 
 \subsection{Criterio de reemplazo}
 
-Los hijos reemplazan directamente a los padres. Para preservar el elitismo, si la mejor sulución de la generación anterior no sobrevive, la peor solución se reemplaza por una nueva.
+Se ha utilizado \lstinline|OrderArrayCreator|, mediante el cual, los hijos reemplazan directamente a los padres. Para preservar el elitismo, si la mejor sulución de la generación anterior no sobrevive, la peor solución se reemplaza por una nueva.
+
+\subsection{Implementación}
+
+Para la importación de la librería JCLEC se ha creado una dependencia Maven de esta. Se ha publicado en el siguiente repositorio: \href{https://github.com/davidmigloz/jclec\_maven\_repo}{JCLEC Maven Repository}.
+
+La aplicación cuenta con las siguientes clases:
+
+\begin{itemize}[noitemsep]
+	\item \lstinline|Run|: permite lanzar la aplicación seleccionando por parámetro el archivo de vuelos deseado.
+	\item \lstinline|AirTrafficController|: implementación del algoritmo genético.
+	\item \lstinline|Airport|: clase que modela un aeropuerto. Posee la lógica para seleccionar la mejor pista para un determinado avión. Además, permite conocer el retraso acumulado o el momento en el que aterrizó el último avión.
+	\item \lstinline|Runway|: clase que modela una pista del aeropuerto. Posee la lógica para calcular cuando estará libre para que aterrice un determinado tipo de avión.
+	\item \lstinline|Flight|: clase que modela una vuelo. Posee la lógica para calcular el retraso que tuvo.
+\end{itemize}
+
 
 \section{Análisis}
 
 A continuación exponemos los resultados obtenidos y realizamos un análisis de estos.
+
+\subsection{Resultados con los diferentes ficheros de prueba}
+
+Se ejecutó el algoritmo con los diferentes ficheros de prueba y la siguiente configuración fija:
+
+\begin{itemize}[noitemsep]
+	\item Selección: \lstinline|RouletteSelector|.
+	\item Cruce: \lstinline|OrderPMXCrossover|.
+	\item Mutación: \lstinline|Order2OptMutator|.	
+\end{itemize}
+
+En la siguiente tabla se muestran los fitness obtenidos para cada uno de los test junto con el instante en el que se realizó el último aterrizaje:
+
+\newpage
+
+\begin{table}[!ht]
+\centering
+\begin{tabular}{@{}lllll@{}}
+\toprule
+Fichero            & Mejor & Peor & Medio & Último aterrizaje \\ \midrule
+IncomingFlights\_1 & 30    & 119  & 114   & 13                \\
+IncomingFlights\_2 & 215   & 689  & 595   & 47                \\
+IncomingFlights\_3 & 27    & 172  & 170   & 19                \\
+IncomingFlights\_4 & 147   & 531  & 382   & 16                \\ \bottomrule
+\end{tabular}
+\caption{Resultados ficheros de test}
+\end{table}
+
+Todos los gráficos y logs generados se encuentran disponibles en: TODO
+
+\subsection{Resultados con los diferentes operadores genéticos}
+
+A continuación se exponen los resultados de comparar diferentes implementaciones de los operadores genéticos. El archivo de pruebas utilizado fue \lstinline|IncomingFlights_4|.
+
+\subsubsection{Selección: RouletteSelector vs. RandomSelector}
+
+El resto de parámetros se fijo a:
+
+\begin{itemize}[noitemsep]
+	\item Cruce: \lstinline|OrderPMXCrossover|.
+	\item Mutación: \lstinline|Order2OptMutator|.	
+\end{itemize}
+
+En la siguiente tabla se muestran los fitness obtenidos para cada uno de los test junto con el instante en el que se realizó el último aterrizaje:
+
+\begin{table}[!ht]
+\centering
+\begin{tabular}{@{}lllll@{}}
+\toprule
+Algoritmo        & Mejor & Peor & Medio & Último aterrizaje \\ \midrule
+RouletteSelector & 147   & 531  & 328   & 16                \\
+RandomSelector   & 90    & 427  & 259   & 14                \\ \bottomrule
+\end{tabular}
+\caption{RouletteSelector vs. RandomSelector}
+\end{table}
+
+Los gráficos de la ejecución fueron:
+\newpage
+
+\begin{figure}[!ht]
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{RouletteSelector.png}
+  \caption{RouletteSelector}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{RandomSelector.png}
+  \caption{RandomSelector}
+\end{minipage}
+\end{figure}
+
+\subsubsection{Cruce: OrderOXCrossover vs. OrderPMXCrossover}
+
+El resto de parámetros se fijo a:
+
+\begin{itemize}[noitemsep]
+	\item Selección: \lstinline|RouletteSelector|.
+	\item Mutación: \lstinline|Order2OptMutator|.	
+\end{itemize}
+
+En la siguiente tabla se muestran los fitness obtenidos para cada uno de los test junto con el instante en el que se realizó el último aterrizaje:
+ 
+\begin{table}[!ht]
+\centering
+\begin{tabular}{@{}lllll@{}}
+\toprule
+Algoritmo         & Mejor & Peor & Medio & Último aterrizaje \\ \midrule
+OrderOXCrossover  & 137   & 487  & 290   & 17                \\
+OrderPMXCrossover & 147   & 531  & 382   & 16                \\ \bottomrule
+\end{tabular}
+\caption{OrderOXCrossover vs. OrderPMXCrossover}
+\end{table}
+
+Los gráficos de la ejecución fueron:
+
+\begin{figure}[!ht]
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{OrderOXCrossover.png}
+  \caption{OrderOXCrossover}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{OrderPMXCrossover.png}
+  \caption{OrderPMXCrossover}
+\end{minipage}
+\end{figure}
+
+\newpage
+
+\subsubsection{Mutación: Order2OptMutator vs. OrderSublistMutator}
+
+El resto de parámetros se fijo a:
+
+\begin{itemize}[noitemsep]
+	\item Selección: \lstinline|RouletteSelector|.
+	\item Cruce: \lstinline|OrderPMXCrossover|.
+\end{itemize}
+
+En la siguiente tabla se muestran los fitness obtenidos para cada uno de los test junto con el instante en el que se realizó el último aterrizaje:
+
+\begin{table}[!ht]
+\centering
+\begin{tabular}{@{}lllll@{}}
+\toprule
+Algoritmo           & Mejor & Peor & Medio & Último aterrizaje \\ \midrule
+Order2OptMutator    & 147   & 531  & 382   & 16                \\
+OrderSublistMutator & 150   & 487  & 388   & 17                \\ \bottomrule
+\end{tabular}
+\caption{Order2OptMutator vs. OrderSublistMutator}
+\end{table}
+
+Los gráficos de la ejecución fueron:
+
+\begin{figure}[!ht]
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{Order2OptMutator.png}
+  \caption{Order2OptMutator}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{OrderSublistMutator.png}
+  \caption{OrderSublistMutator}
+\end{minipage}
+\end{figure}
+
+\subsection{Resultados con variación de los parámetros}
+
+A continuación se exponen los resultados de variar ciertos parámetros numéticos del algoritmo. El archivo de pruebas utilizado fue \lstinline|IncomingFlights_4|. Las implementaciones de los operadores genéticos fueron:
+
+\begin{itemize}[noitemsep]
+	\item Selección: \lstinline|RouletteSelector|.
+	\item Cruce: \lstinline|OrderPMXCrossover|.
+	\item Mutación: \lstinline|Order2OptMutator|.	
+\end{itemize}
+
+\newpage
+\subsubsection{Tamaño de la población}
+
+\begin{table}[!ht]
+\centering
+\begin{tabular}{@{}lllll@{}}
+\toprule
+Tamaño & Mejor & Peor & Medio & Último aterrizaje \\ \midrule
+50     & 158   & 465  & 327   & 16                \\
+500    & 112   & 557  & 508   & 15                \\ \bottomrule
+\end{tabular}
+\caption{50 vs. 500}
+\end{table}
+
+\begin{figure}[!ht]
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{50tam.png}
+  \caption{50}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{500tam.png}
+  \caption{500}
+\end{minipage}
+\end{figure}
+
+\subsubsection{Probabilidad de cruce}
+
+\begin{table}[!ht]
+\centering
+\begin{tabular}{@{}lllll@{}}
+\toprule
+Probabilidad & Mejor & Peor & Medio & Último aterrizaje \\ \midrule
+50\%         & 135   & 529  & 440   & 15                \\
+90\%         & 128   & 429  & 389   & 17                \\ \bottomrule
+\end{tabular}
+\caption{50\% vs. 90\%}
+\end{table}
+
+\begin{figure}[!ht]
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{50cruce.png}
+  \caption{50\%}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{90cruce.png}
+  \caption{90\%}
+\end{minipage}
+\end{figure}
+
+\newpage
+
+\subsubsection{Probabilidad de mutación}
+
+\begin{table}[!ht]
+\centering
+\begin{tabular}{@{}lllll@{}}
+\toprule
+Probabilidad & Mejor & Peor & Medio & Último aterrizaje \\ \midrule
+5\%          & 118   & 473  & 409   & 18                \\
+20\%         & 126   & 488  & 308   & 17                \\ \bottomrule
+\end{tabular}
+\caption{5\% vs. 20\%}
+\end{table}
+
+\begin{figure}[!ht]
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{5mut.png}
+  \caption{5\%}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{20mut.png}
+  \caption{20\%}
+\end{minipage}
+\end{figure}
+
+\subsection{Análisis}
 
 TODO
 
