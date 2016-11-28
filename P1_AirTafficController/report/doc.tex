@@ -513,9 +513,18 @@ Una vez habiendo comentado el porque de la forma de la gráfica y los problemas 
  * Mutación: 2 Opt y Sublist
          2Opt parece dar mejores resultados y parece que tiene sentido que un algorimo de mutación simple pero potente como 2Opt vaya a dar mejores resultados que Sublist, ya que al modificar menos elementos consigue un punto muy diferente del espacio de busqueda pero con una fitness suficientemente parecida como para que pueda llegar a reproducirse con más probabilidad que Sublist que puede ser que cambie mucho más el elemento y deje la fitness siendo muy mala para cruzarse consistentemente.
 	 
+En cuanto a la selección de parametros:
+ * Tamaño de la población:
+         El parametro de tamaño de la población se comporta como esperabamos, cuanta más mejores resultados encuentra por pura fuerza bruta, pero cuando tenemos menos individuos la media es mejor.
+	 
+ * Probabilidad de cruce:
+	 El comportamiento al reducir este parametro es una exploración más lenta del espacio de busqueda, en nuestro ejemplo específico acaba encontrando resultados mejores pero creemos que es por pura coincidencia, aunque podría ser que los optimos esten fuera de la región de optimos locales donde la mayoria de ejecuciones se quedan.
+	 
+ * Probabilidad de mutacion:
+	 Según más aumentemos este parametro más espacios alejados de los optimos actuales exploraremos y que con más probabilidad haya encontrado mejores resultados nos hace sospechar que las mejores soluciones están lejos de algun grupo de optimos locales.
+	 
 	 
 
-TODO
 
 \section{Conclusiones}
 SE HA DESCUBIERTO UN BUG CON EL GENERADOR ALEATORIO DE ORDERARRAY, SIEMPRE QUE GENERA UN ARRAY LA ULTIMA POSICION VALE ARRAY.LENGTH - 1  
