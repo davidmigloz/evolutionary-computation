@@ -499,7 +499,21 @@ El resultado podría haber sido perfectamente el siguiente (Es un cruce real per
 
 Como podemos ver es cierto que ha mejorado la fitness de uno de los individuos respecto a la del mejor padre, pero tambien es cierto que la de el otro hijo a empeorado bastante. Tambien podemos ver que la media a empeorado desde 229.5 hasta 233.5.
 
- 
+Otro motivo que creemos puede estar influenciando los resultados es que el espacio de busqueda es enorme y debido a nuestra representación no obtienes ninguna informacion de vecinos que estan muy proximos por lo que hace que le sea imposible dar resultados estables.
+
+También nos hemos encontrado con otro problema a la hora de realizar la practica: la dificultad de repetir un buen número de veces cada experimento para obtener resultados fiables en los que los rng no sean la principal causa de un resultado más o menos exitoso.
+
+Una vez habiendo comentado el porque de la forma de la gráfica y los problemas para encontrar resultados validos a nivel científico, vamos a comentar los resultados de las comparaciones de algoritmos que hemos comentado antes y que se nos pide:
+ * Selector: Ruleta y Aleatorio
+         En este caso podemos atribuir que el aleatorio funcione generalmente mejor que el ruleta por lo que hemos comentado, al reorganizar los numeros lo suficiente para que los hijos no se parezcan en nada a los padres hace que la aleatoriedad pueda ser mucho mejor o mucho peor que la ruleta.
+
+ * Cruce: Order (X)crossover operator  y Partially Matched (X)crossover
+         Podemos ver que OX da ligeramente mejores resultados que PMX pero son tan poco mejores que no podemos decir que sean significativos. Otra cosa a tener en cuenta es que PMX explora más de manera que produce más picos tanto hacia los mínimos como hacia los máximos de manera que vemos que esta explorando, esto ultimo puede ser lo que haga que haya encontrado un mínimo mejor.
+
+ * Mutación: 2 Opt y Sublist
+         2Opt parece dar mejores resultados y parece que tiene sentido que un algorimo de mutación simple pero potente como 2Opt vaya a dar mejores resultados que Sublist, ya que al modificar menos elementos consigue un punto muy diferente del espacio de busqueda pero con una fitness suficientemente parecida como para que pueda llegar a reproducirse con más probabilidad que Sublist que puede ser que cambie mucho más el elemento y deje la fitness siendo muy mala para cruzarse consistentemente.
+	 
+	 
 
 TODO
 
