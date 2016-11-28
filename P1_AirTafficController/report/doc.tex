@@ -524,11 +524,13 @@ En cuanto a la selección de parametros:
 	 Según más aumentemos este parametro más espacios alejados de los optimos actuales exploraremos y que con más probabilidad haya encontrado mejores resultados nos hace sospechar que las mejores soluciones están lejos de algun grupo de optimos locales.
 	 
 	 
-
-
 \section{Conclusiones}
-SE HA DESCUBIERTO UN BUG CON EL GENERADOR ALEATORIO DE ORDERARRAY, SIEMPRE QUE GENERA UN ARRAY LA ULTIMA POSICION VALE ARRAY.LENGTH - 1  
-TODO
+El uso de jclec es complejo si se quiere hacer correctamente, no por la complejidad de la biblioteca si no por los problemas que da, por ejemplo cuando genera order array automaticamente tiene un bug y la ultima posicion de dicho array acaba valiendo siempre la longitud del array menos uno. Esto es solo uno de los muchos problemas que tiene como el hecho de que orderarray no este en el paquete principal y este en tutorial. 
+
+Este conjunto de pequeños fallos se van acumulando formando una montaña que dificulta el hecho de usar jclec de manera cientifica o al menos lo más cientifica posible.
+
+Como ultimo cabe destacar el hecho de que existe gran varianza en los resultados obtenidos por el bajo numero de ejecuciones de los mismos, esto no se hubiera dado así si jclec tubiese una manera de reducir varianza, por ejemplo dejando ejecutar el experimento n veces. Consideramos que el framework no esta mal pero parece como si varias personas hubieran hecho distintos proyectos y los hubieran juntado en un momento dado en vez de trabajar conjuntamente.
+
 
 % -------------------------------------------------------------
 % Bibliography
