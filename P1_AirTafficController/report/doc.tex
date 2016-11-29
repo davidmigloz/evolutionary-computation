@@ -146,7 +146,7 @@ A continuación se detalla la codificación y configuración del problema para s
 Para representar los individuos se ha utilizado un array de enteros ordenado (\lstinline|OrderArrayIndividual|). Se probaron dos representaciones diferentes, en ambas cada posición del array representaba un avión, pero el ordenamiento era distinto:
 
 \begin{enumerate}[noitemsep]
-	\item Array ordenado por orden de llegada. De tal manera, que la primera posición se correspondía con el primer avión en llegar. Y el valor de cada posición indicaba el número del avión.
+	\item Array ordenado por orden de llegada. De tal manera, que la primera posición se correspondía con el primer avión en llegar. Y el valor de cada posición indicaba el identificador del avión.
 	\item Array ordenado por número de avión. De tal manera, que la primera posición se correspondía con el avión número uno. Y el valor de cada posición indicaba la posición de llegada del avión.
 \end{enumerate}
 
@@ -181,11 +181,11 @@ Se compararon ambos métodos y se vió que arrojaban resultados similares. Sin e
 
 \subsection{Inicialización}
 
-La población inicial se inicializa de forma aleatoria. Se ha utilizado el generador \lstinline|Ranecu|, se trata de un generador lineal congruencial avanzado con un periodo aproximado de $10^18$ \citep{jclec:ranecu}.
+La población inicial se inicializa de forma aleatoria. Se ha utilizado el generador \lstinline|Ranecu|, un generador lineal congruencial avanzado con un periodo aproximado de $10^{18}$ \citep{jclec:ranecu}.
 
 \subsection{Criterio de parada}
 
-El criterio de parada se ha establecido en 1.000 generaciones.
+El criterio de parada se ha establecido en 1.000 generaciones por defecto.
 
 \subsection{Criterio de selección}
 
@@ -205,11 +205,11 @@ Para obtener un nuevo individuo basado en el genotipo de sus padres se han anali
 	\item \lstinline|OrderPMXCrossover|: PMX Crossover.
 \end{enumerate}
 
-La probabilidad de cruce se estableció en un 75\%.
+La probabilidad de cruce se estableció en un 75\% por defecto.
 
 \subsection{Operador de mutación}
 
-Cada gen del genotipo de un individuo tiene 3\% de probabilidad de mutar. Se han analizado los siguientes algoritmos de mutación:
+Cada gen del genotipo de un individuo tiene, por defecto, un 3\% de probabilidad de mutar. Se han analizado los siguientes algoritmos de mutación:
 
 \begin{enumerate}[noitemsep]
 	\item \lstinline|Order2OptMutator|: mutación 2-opt del genotipo.
@@ -220,9 +220,13 @@ Cada gen del genotipo de un individuo tiene 3\% de probabilidad de mutar. Se han
 
 Se ha utilizado \lstinline|OrderArrayCreator|, mediante el cual, los hijos reemplazan directamente a los padres. Para preservar el elitismo, si la mejor sulución de la generación anterior no sobrevive, la peor solución se reemplaza por una nueva.
 
+No se han analizado más algoritmos de reemplazo ya que la librería sólo proporciona este para trabajar con \lstinline|OrderArrayIndividual|.
+
 \subsection{Implementación}
 
-Para la importación de la librería JCLEC se ha creado una dependencia Maven de esta. Se ha publicado en el siguiente repositorio: \href{https://github.com/davidmigloz/jclec\_maven\_repo}{JCLEC Maven Repository}.
+Para la importación de la librería JCLEC se ha creado una dependencia Maven de esta. Se ha publicado en el siguiente repositorio: \href{https://github.com/davidmigloz/jclec\_maven\_repo}{JCLEC Maven Repository}. 
+
+*Se ha añadido el paquete \lstinline|orderarray| a la versión base de la libería. Ya que, en la versión original sólo se incluye con los ejemplos.
 
 La aplicación cuenta con las siguientes clases:
 
@@ -235,13 +239,15 @@ La aplicación cuenta con las siguientes clases:
 \end{itemize}
 
 
-\section{Análisis}
+\section{Resultados}
 
-A continuación exponemos los resultados obtenidos y realizamos un análisis de estos.
+A continuación exponemos los resultados obtenidos.
+
+Todos los gráficos y logs generados se encuentran disponibles en: \href{https://github.com/davidmigloz/evolutionary-computation/tree/master/P1\_AirTafficController/data}{Data}.
 
 \subsection{Resultados con los diferentes ficheros de prueba}
 
-Se ejecutó el algoritmo con los diferentes ficheros de prueba y la siguiente configuración fija:
+Se ejecutó el algoritmo con los diferentes ficheros de prueba y la siguiente configuración fija (a parte del resto de parámetros por defecto explicados en la sección anterior):
 
 \begin{itemize}[noitemsep]
 	\item Selección: \lstinline|RouletteSelector|.
@@ -266,8 +272,6 @@ IncomingFlights\_4 & 147   & 531  & 382   & 16                \\ \bottomrule
 \caption{Resultados ficheros de test}
 \end{table}
 
-Todos los gráficos y logs generados se encuentran disponibles en: TODO
-
 \subsection{Resultados con los diferentes operadores genéticos}
 
 A continuación se exponen los resultados de comparar diferentes implementaciones de los operadores genéticos. El archivo de pruebas utilizado fue \lstinline|IncomingFlights_4|.
@@ -281,7 +285,7 @@ El resto de parámetros se fijo a:
 	\item Mutación: \lstinline|Order2OptMutator|.	
 \end{itemize}
 
-En la siguiente tabla se muestran los fitness obtenidos para cada uno de los test junto con el instante en el que se realizó el último aterrizaje:
+Resultados:
 
 \begin{table}[!ht]
 \centering
@@ -293,9 +297,6 @@ RandomSelector   & 90    & 427  & 259   & 14                \\ \bottomrule
 \end{tabular}
 \caption{RouletteSelector vs. RandomSelector}
 \end{table}
-
-Los gráficos de la ejecución fueron:
-\newpage
 
 \begin{figure}[!ht]
 \centering
@@ -320,7 +321,7 @@ El resto de parámetros se fijo a:
 	\item Mutación: \lstinline|Order2OptMutator|.	
 \end{itemize}
 
-En la siguiente tabla se muestran los fitness obtenidos para cada uno de los test junto con el instante en el que se realizó el último aterrizaje:
+Resultados:
  
 \begin{table}[!ht]
 \centering
@@ -332,8 +333,6 @@ OrderPMXCrossover & 147   & 531  & 382   & 16                \\ \bottomrule
 \end{tabular}
 \caption{OrderOXCrossover vs. OrderPMXCrossover}
 \end{table}
-
-Los gráficos de la ejecución fueron:
 
 \begin{figure}[!ht]
 \centering
@@ -349,8 +348,6 @@ Los gráficos de la ejecución fueron:
 \end{minipage}
 \end{figure}
 
-\newpage
-
 \subsubsection{Mutación: Order2OptMutator vs. OrderSublistMutator}
 
 El resto de parámetros se fijo a:
@@ -360,7 +357,7 @@ El resto de parámetros se fijo a:
 	\item Cruce: \lstinline|OrderPMXCrossover|.
 \end{itemize}
 
-En la siguiente tabla se muestran los fitness obtenidos para cada uno de los test junto con el instante en el que se realizó el último aterrizaje:
+Resultados:
 
 \begin{table}[!ht]
 \centering
@@ -372,8 +369,6 @@ OrderSublistMutator & 150   & 487  & 388   & 17                \\ \bottomrule
 \end{tabular}
 \caption{Order2OptMutator vs. OrderSublistMutator}
 \end{table}
-
-Los gráficos de la ejecución fueron:
 
 \begin{figure}[!ht]
 \centering
@@ -391,7 +386,7 @@ Los gráficos de la ejecución fueron:
 
 \subsection{Resultados con variación de los parámetros}
 
-A continuación se exponen los resultados de variar ciertos parámetros numéticos del algoritmo. El archivo de pruebas utilizado fue \lstinline|IncomingFlights_4|. Las implementaciones de los operadores genéticos fueron:
+A continuación se exponen los resultados de variar ciertos parámetros numéricos del algoritmo. El archivo de pruebas utilizado fue \lstinline|IncomingFlights_4|. Las implementaciones de los operadores genéticos fueron:
 
 \begin{itemize}[noitemsep]
 	\item Selección: \lstinline|RouletteSelector|.
@@ -399,7 +394,6 @@ A continuación se exponen los resultados de variar ciertos parámetros numétic
 	\item Mutación: \lstinline|Order2OptMutator|.	
 \end{itemize}
 
-\newpage
 \subsubsection{Tamaño de la población}
 
 \begin{table}[!ht]
@@ -454,8 +448,6 @@ Probabilidad & Mejor & Peor & Medio & Último aterrizaje \\ \midrule
 \end{minipage}
 \end{figure}
 
-\newpage
-
 \subsubsection{Probabilidad de mutación}
 
 \begin{table}[!ht]
@@ -483,54 +475,74 @@ Probabilidad & Mejor & Peor & Medio & Último aterrizaje \\ \midrule
 \end{minipage}
 \end{figure}
 
-\subsection{Análisis}
-Como se ha podido ver a lo largo de toda la sección ha habido algún punto en el que no hemos sido capaces de elegir lo mejor para que el algoritmo fuera capaz de ir mejorando los individuos con las generaciones. 
+\section{Análisis}
 
+Tras analizar los resultados detenidamente, hemos encontrado varias situaciones en las que no hemos sido capaces de decantarnos por una de las condiguraciones analizadas para que el algoritmo fuera capaz de seguir mejorando los individuos generación tras generación.
 
-Principalmente nos parece que el orderarray que usamos puede no ser la mejor opción a la hora del cruce, esto se debe a que dos padres con buena fitness se pueden producir dos individuos no tan buenos.
+Principalmente, creemos que el mayor problema de nuestra implementación ha sido el uso de \lstinline|OrderArrayIndividual|. Hemos comprobado que no es nada bueno para realizar operacines de cruce sobre él. Ya que, dos padres con buen \textit{fitness} pueden dar lugar a dos nuevos individuos no tan buenos.
 
-Por ejemplo, si se hubiesen cruzado los siguientes individuos
-genotype = (5 10 17 16 11 19 20 13 14 22 18 7 9 4 1 3 12 21 8 6 2 15 0 23), fitness =[value=222.0]
-genotype = (16 22 19 8 10 12 2 4 1 9 5 3 7 0 11 14 6 15 20 21 17 13 18 23), fitness =[value=237.0]
+Por ejemplo, partiendo de los siguientes individuos:
 
-El resultado podría haber sido perfectamente el siguiente (Es un cruce real pero no se sabe si se dio en las pruebas):
-(8 10 17 16 11 19 20 13 14 22 18 12 2 4 1 9 5 3 7 0 6 15 21 23), fitness = 216
-(17 22 19 8 10 12 2 4 1 9 5 16 11 20 13 14 18 7 3 21 6 15 0 23), fitness = 251
+\lstinline|(5 10 17 16 11 19 20 13 14 22 18 7 9 4 1 3 12 21 8 6 2 15 0 23)|, \\ 
+\lstinline|fitness=222|
 
-Como podemos ver es cierto que ha mejorado la fitness de uno de los individuos respecto a la del mejor padre, pero tambien es cierto que la de el otro hijo a empeorado bastante. Tambien podemos ver que la media a empeorado desde 229.5 hasta 233.5.
+\lstinline|(16 22 19 8 10 12 2 4 1 9 5 3 7 0 11 14 6 15 20 21 17 13 18 23)|, \\ \lstinline|fitnesse=237|
 
-Otro motivo que creemos puede estar influenciando los resultados es que el espacio de busqueda es enorme y debido a nuestra representación no obtienes ninguna informacion de vecinos que estan muy proximos por lo que hace que le sea imposible dar resultados estables.
+El resultado de la operación de cruce podría haber sido perfectamente el siguiente (ejemplo real):
 
-También nos hemos encontrado con otro problema a la hora de realizar la practica: la dificultad de repetir un buen número de veces cada experimento para obtener resultados fiables en los que los rng no sean la principal causa de un resultado más o menos exitoso.
+\lstinline|(8 10 17 16 11 19 20 13 14 22 18 12 2 4 1 9 5 3 7 0 6 15 21 23)|, \\ 
+\lstinline|fitness=216|
+
+\lstinline|(17 22 19 8 10 12 2 4 1 9 5 16 11 20 13 14 18 7 3 21 6 15 0 23)|, \\ 
+\lstinline|fitness=251|
+
+Como podemos observar, es cierto que ha mejorado el \textit{fitness} de uno de los individuos respecto al del mejor padre. Pero tambien es cierto que el del otro hijo a empeorado bastante, al igual que la media, que ha empeorado desde 229,5 hasta 233,5.
+
+Achacamos a este problema la gran varianza que hemos obtenido en todos los resultados. Como se puede ver en la mayoría de los gráficos, la media (línea verde) no consigue tener una tendencia decreciente, sino que varia en gran medida a lo largo de las generaciones.
+
+Otro motivo que creemos puede estar influenciando los resultados es el enorme espacio de busqueda. La representación elegida no localiza a individuos similares en regiones similares, sino que podemos tener un resultado muy bueno y al lado uno muy malo. Esto hace que al algoritmo le sea imposible dar con resultados estables.
+
+Otro problema que nos hemos encontrado a la hora de realizar la practica ha sido la dificultad de repetir un buen número de veces cada experimento para que la aleatoriedad no sea la principal causa de obtener un resultado más o menos exitoso.
 
 Una vez habiendo comentado el porque de la forma de la gráfica y los problemas para encontrar resultados validos a nivel científico, vamos a comentar los resultados de las comparaciones de algoritmos que hemos comentado antes y que se nos pide:
- * Selector: Ruleta y Aleatorio
-         En este caso podemos atribuir que el aleatorio funcione generalmente mejor que el ruleta por lo que hemos comentado, al reorganizar los numeros lo suficiente para que los hijos no se parezcan en nada a los padres hace que la aleatoriedad pueda ser mucho mejor o mucho peor que la ruleta.
 
- * Cruce: Order (X)crossover operator  y Partially Matched (X)crossover
-         Podemos ver que OX da ligeramente mejores resultados que PMX pero son tan poco mejores que no podemos decir que sean significativos. Otra cosa a tener en cuenta es que PMX explora más de manera que produce más picos tanto hacia los mínimos como hacia los máximos de manera que vemos que esta explorando, esto ultimo puede ser lo que haga que haya encontrado un mínimo mejor.
+Dicho esto, pasamos a analizar individualmente los resultados. En cuanto a los distintos operadores genéticos:
 
- * Mutación: 2 Opt y Sublist
-         2Opt parece dar mejores resultados y parece que tiene sentido que un algorimo de mutación simple pero potente como 2Opt vaya a dar mejores resultados que Sublist, ya que al modificar menos elementos consigue un punto muy diferente del espacio de busqueda pero con una fitness suficientemente parecida como para que pueda llegar a reproducirse con más probabilidad que Sublist que puede ser que cambie mucho más el elemento y deje la fitness siendo muy mala para cruzarse consistentemente.
+\textbf{Selección: RouletteSelector vs. RandomSelector}
+
+\lstinline|RandomSelector| ha proporcionado el mejor resultado. Podemos atribuir esto a lo comentado anteriormente, no porque el padre sea bueno, vamos a obtener necesariamente hijos buenos. Por esto, el aleatorio funciona bien en este caso.
+
+\textbf{Cruce: OrderOXCrossover vs. OrderPMXCrossover}
+
+Podemos ver que OX da ligeramente mejores resultados que PMX, aunque no podemos decir que sean significativos. Hay que tener en cuenta que PMX explora una mayor región del espacio, de manera que produce más picos tanto hacia los mínimos como hacia los máximos, lo que le puede llevar a encontrar el mejor mínimo.
+
+\textbf{Mutación: Order2OptMutator vs. OrderSublistMutator}
+
+Se puede observar que 2Opt da mejores resultados. En parte tiene sentido, ya que al modificar menos elementos consigue un punto muy diferente del espacio de busqueda, pero con un \textit{fitness} suficientemente parecido como para que pueda llegar a reproducirse con más probabilidad que Sublist. Ya que este último puede modificar en mayor medida el individuo, pero dejando \textit{fitness} malos para que el cruce sea consistente.
 	 
-En cuanto a la selección de parametros:
- * Tamaño de la población:
-         El parametro de tamaño de la población se comporta como esperabamos, cuanta más mejores resultados encuentra por pura fuerza bruta, pero cuando tenemos menos individuos la media es mejor.
+En cuanto a los resultados obtenidos con la variación de parámetros:
+
+\textbf{Tamaño de la población}
+
+El parametro de tamaño de la población se comporta como esperabamos: cuanto mayor sea, mejores resultados encuentra (por pura fuerza bruta). Sin embargo, con menos individuos la media es mejor.
 	 
- * Probabilidad de cruce:
-	 El comportamiento al reducir este parametro es una exploración más lenta del espacio de busqueda, en nuestro ejemplo específico acaba encontrando resultados mejores pero creemos que es por pura coincidencia, aunque podría ser que los optimos esten fuera de la región de optimos locales donde la mayoria de ejecuciones se quedan.
+\textbf{Probabilidad de cruce}
+
+El comportamiento al reducir este parametro es una exploración más lenta del espacio de busqueda. En nuestro ejemplo específico, acaba encontrando resultados mejores pero creemos que es por pura coincidencia. Aunque podría ser que los óptimos estén fuera de la región de óptimos locales, donde indiden la mayoria de ejecuciones.
 	 
- * Probabilidad de mutacion:
-	 Según más aumentemos este parametro más espacios alejados de los optimos actuales exploraremos y que con más probabilidad haya encontrado mejores resultados nos hace sospechar que las mejores soluciones están lejos de algun grupo de optimos locales.
+\textbf{Probabilidad de mutacion}
 	 
+Según se aumenta este parametro más espacios alejados de los óptimos actuales explora el algoritmo. Que al aumentar la probabilidad haya encontrado mejores resultados, nos hace sospechar que las mejores soluciones están lejos de algún grupo de óptimos locales.
+
+Para terminar el análisis, comentar que se ha descubierto un bug en el generador de números aleatorios de la librería JCLEC. Al generar un array ordenado, la ultima posición de dicho array acaba valiendo siempre la longitud del array menos uno.
 	 
 \section{Conclusiones}
-El uso de jclec es complejo si se quiere hacer correctamente, no por la complejidad de la biblioteca si no por los problemas que da, por ejemplo cuando genera order array automaticamente tiene un bug y la ultima posicion de dicho array acaba valiendo siempre la longitud del array menos uno. Esto es solo uno de los muchos problemas que tiene como el hecho de que orderarray no este en el paquete principal y este en tutorial. 
 
-Este conjunto de pequeños fallos se van acumulando formando una montaña que dificulta el hecho de usar jclec de manera cientifica o al menos lo más cientifica posible.
-
-Como ultimo cabe destacar el hecho de que existe gran varianza en los resultados obtenidos por el bajo numero de ejecuciones de los mismos, esto no se hubiera dado así si jclec tubiese una manera de reducir varianza, por ejemplo dejando ejecutar el experimento n veces. Consideramos que el framework no esta mal pero parece como si varias personas hubieran hecho distintos proyectos y los hubieran juntado en un momento dado en vez de trabajar conjuntamente.
-
+\begin{itemize}[noitemsep]
+	\item El uso de la librería JCLEC ha sido un tanto contraproducente, habiendo perdido demasiado tiempo en resolver problemas específicos de esta, en vez de centrarnos en encontrar la mejor solución a nuestro problema.
+	\item Utilizar \lstinline|OrderArrayIndividual| para representar los individuos no ha sido la mejor elección. Ya que, los mejores y los peores individuos no están relacionados espacialmente.
+	\item La gran varianza en los resultados se podría haber minimizado realizando varias ejecuciones de cada uno. Sería una característica interesante a implementar en JCLEC.
+\end{itemize}
 
 % -------------------------------------------------------------
 % Bibliography
