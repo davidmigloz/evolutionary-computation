@@ -1,5 +1,7 @@
 package com.davazriel.airtafficcontroller.model;
 
+import java.util.List;
+
 /**
  * Modela una pista del aeropuerto.
  */
@@ -10,7 +12,10 @@ public class Runway {
     private Airport airport;
     private int currentATA;
     private Flight.PlaneType currentPlaneType;
-
+    private List<Flight.PlaneType> nonAllowedPlaneTypes;
+    private int violatedRestriction;
+    
+    
     public Runway(int id, Airport airport) {
         this.id = id;
         this.airport = airport;
@@ -48,9 +53,20 @@ public class Runway {
      * @return cuando estará libre.
      */
     public int getNextTimeRunwayAvailable(Flight.PlaneType planeType) {
+    	if(nonAllowedPlaneTypes.contains(planeType)){
+    		violatedRestriction++;
+    	}
         return currentPlaneType == null ? currentATA : currentATA + airport.getWaitingTime(currentPlaneType, planeType);
     }
 
+    /**
+     * Devuelve el numero de veces que se ha violado la restriccion de pista.
+     * @return El numero de veces.
+     */
+    public int getViolatedRestriction(){
+    	return violatedRestriction;
+    }
+    
     /**
      * Añadir llegada a la pista.
      * @param flight vuelo.

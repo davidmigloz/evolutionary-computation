@@ -20,6 +20,12 @@ public class Flight {
         this.runwayETAs = runwayETAs;
     }
 
+    public Flight(String id, PlaneType type, int[] runwayETAs, Flight contiguousFlight) {
+        this.id = id;
+        this.type = type;
+        this.runwayETAs = runwayETAs;
+    }
+    
     /**
      * Devuelve el id del vuelo.
      * @return id.
@@ -81,7 +87,9 @@ public class Flight {
         return ATA - minETA;
     }
 
-    /**
+    
+
+	/**
      * Tipo de avión.
      */
     public enum PlaneType {

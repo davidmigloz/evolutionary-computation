@@ -96,4 +96,25 @@ public class Airport {
     public int getMaxATA() {
 		return Arrays.stream(runways).mapToInt(Runway::getCurrentATA).min().getAsInt();
 	}
+	
+	/**
+	 * Devuelve el numero de restricciones de pista violadas.
+	 * @return el sumatorio de las restricciones de pista violadas.
+	 */
+	public int getAccumulatedRunwayRestrictionViolations(){
+		List<Runway> runwaysList = new ArrayList<>();
+		for (Runway runway : runways) {
+			runwaysList.add(runway);
+		}
+		return runwaysList.stream().mapToInt((r)->r.getViolatedRestriction()).sum();
+	}
+
+	/**
+	 * Devuelve el numero de restricciones de vuelos consecutivos violadas.
+	 * @return el sumatorio de las restriciones de vuelos consecutivos violadas.
+	 */
+	public int getAccumulatedConsecutiveFlightRestriction(){
+		// TODO
+		return -1;
+	}
 }
