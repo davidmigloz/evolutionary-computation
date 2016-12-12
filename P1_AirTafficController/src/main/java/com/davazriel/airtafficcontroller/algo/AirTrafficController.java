@@ -2,6 +2,7 @@ package com.davazriel.airtafficcontroller.algo;
 
 import com.davazriel.airtafficcontroller.model.Airport;
 import com.davazriel.airtafficcontroller.model.Flight;
+import com.davazriel.airtafficcontroller.model.Flight.PlaneType;
 import com.davazriel.airtafficcontroller.utils.DataReader;
 import net.sf.jclec.IConfigure;
 import net.sf.jclec.IFitness;
@@ -16,7 +17,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ArrayList;
 
 
@@ -67,7 +70,27 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
      * Vuelos que recibimos.
      */
     private List<Flight> flights;
+    
+    /**
+     * Archivo donde estan las restricciones de cada pista.
+     */
+	private String runwayRestrictionsFile;
 
+	/**
+	 * Archivo donde estan las restricciones de que avion tiene que ir detras de cual otro
+	 */
+	private String consecutiveFlightsFile;
+	
+	/**
+	 * Mapa donde se guardan las restricciones de pista como <id pista>-><PlaneTypes no admitidos>
+	 */
+	private Map<Integer, List<PlaneType>> runwayRest;
+	
+	/**
+	 * Mapa donde se guardan los aviones y las restricciones de llegada como <id avion>-><id avion siguiente>
+	 */
+	private HashMap<String, String> consecutiveFlightsRest;
+	
     /**
      * Constructor, inicializamos la lista para los vuelos.
      */
@@ -92,7 +115,7 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
             airport.scheduleFlight(flight);
         }
         // Calculate fitness
-        ind.setFitness(new SimpleValueFitness(airport.getAccumulatedDelay()));
+        ind.setFitness(new SimpleValueFitness(airport.getAccumulatedDelay()));// TODO añadir el getNumFails de cada parte
         // Log last landing
         logger.debug(Arrays.toString(genotype) + ":" + airport.getMaxATA());
     }
@@ -116,6 +139,9 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
     public void configure(Configuration conf) {
         this.waitTimesFileName = conf.getString("[@wait-times-file]");
         this.flightsFile = conf.getString("[@flights-file]");
+        this.runwayRestrictionsFile = conf.getString("[@runway-file]");
+        this.consecutiveFlightsFile = conf.getString("[@consecutive-flights-file]");
+        
         String[] flightString = null;
 
         DataReader dataReader = new DataReader();
@@ -130,10 +156,35 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
             for (int i = 2; i < flightString.length; i++) {
                 runwayETAs[i - 2] = Integer.valueOf(flightString[i]);
             }
-            flights.add(new Flight(flightString[0], Flight.PlaneType.valueOf(flightString[1]), runwayETAs));
+            flights.add(new Flight(flightString[0], PlaneType.valueOf(flightString[1]), runwayETAs));
         }
         dataReader.closeFile();
-
+        
+        runwayRest = new HashMap<Integer, List<PlaneType>>();
+        dataReader.openFile(runwayRestrictionsFile);
+        while (dataReader.ready()) {
+            String[] runwayRestString = dataReader.readLine();
+            Integer runway = Integer.valueOf(runwayRestString[0]);
+            List<PlaneType> notAllowed = new ArrayList<PlaneType>();
+            for (int i = 1; i < runwayRestString.length; i++) {
+                notAllowed.add(PlaneType.valueOf(runwayRestString[i]));
+            }
+            runwayRest.put(runway, notAllowed);
+        }
+        dataReader.closeFile();
+        
+        consecutiveFlightsRest = new HashMap<>();
+        dataReader.openFile(consecutiveFlightsFile);
+        while (dataReader.ready()) {
+            String[] consFlightsString = dataReader.readLine();
+            int i = 0;
+            do{
+            	consecutiveFlightsRest.put(consFlightsString[i], consFlightsString[(i++)]);
+            }while(i<consFlightsString.length-1);
+        }
+        dataReader.closeFile();
+        
+        
         nRunways = flightString.length - 2;
     }
 
