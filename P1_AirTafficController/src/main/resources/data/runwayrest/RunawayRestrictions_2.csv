@@ -1,0 +1,4 @@
+# Type of flights that are NOT adequate for each runaway
+# Some runaways are able to accept any type of plane (ex. Runnaway 1)
+1,
+2,SMALL,

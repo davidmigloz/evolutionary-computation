@@ -1,0 +1,5 @@
+# Flights that should be together in the same runaway (no matter which),,
+# Each line identifies flights that are advised to land in the same runaway,,
+# with the lower interval of time possible between them,,
+V0,V4,
+V5,V7,V8
