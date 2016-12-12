@@ -13,6 +13,7 @@ public class Flight {
     private int[] runwayETAs;
     private int ATA;
     private Runway assignedRunway;
+	private Flight contiguousFlight;
 
     public Flight(String id, PlaneType type, int[] runwayETAs) {
         this.id = id;
@@ -24,6 +25,7 @@ public class Flight {
         this.id = id;
         this.type = type;
         this.runwayETAs = runwayETAs;
+        this.contiguousFlight = contiguousFlight;
     }
     
     /**
@@ -103,5 +105,12 @@ public class Flight {
         public int getIndex() {
             return index;
         }
+    }
+    
+    /**
+     * 
+     */
+    public void setContiguousFlight(Flight contiguousFlight){
+    	this.contiguousFlight = contiguousFlight;
     }
 }
