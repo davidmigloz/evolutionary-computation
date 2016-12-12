@@ -55,12 +55,40 @@ public class Flight {
     }
 
     /**
+     * Devuelve los tiempo estimados de llegada del avión en las diferentes pistas.
+     *
+     * @return ETAs.
+     */
+    public int[] getETAs() {
+        return runwayETAs.clone();
+    }
+
+    /**
+     * Devuelve el menor tiempo estimado de llegada del avión.
+     *
+     * @return min ETA.
+     */
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    public int getMinETA() {
+        return Arrays.stream(runwayETAs).min().getAsInt();
+    }
+
+    /**
      * Permite establecer el tiempo actual de llegada.
      *
      * @param ATA ATA.
      */
     public void setATA(int ATA) {
         this.ATA = ATA;
+    }
+
+    /**
+     * Devuelve el momento final en el que aterrirza.
+     *
+     * @return ATA.
+     */
+    public int getATA() {
+        return ATA;
     }
 
     /**
@@ -88,39 +116,17 @@ public class Flight {
      *
      * @return retraso.
      */
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
     public int getDelay() {
-        int minETA = Arrays.stream(runwayETAs).min().getAsInt();
-        return ATA - minETA;
+        return ATA - getMinETA();
     }
 
     /**
-     * Comprueba si tiene vuelo contiguo o no.
-     *
-     * @return si tiene vuelo contiguo.
-     */
-    public boolean hasContiguousFlight() {
-        return contiguousFlight != null;
-    }
-
-    /**
-     * Comprueba si el avión contiguo asociado ha aterrizado en la misma pista.
-     * Es responsabilidad del cliente asegurarse de que tiene contiguousFlight.
-     *
-     * @return si se ha cumplido la restricción o no.
-     */
-    public boolean isFlightRestrictionViolated() {
-        return this.getAssignedRunway().getId() != contiguousFlight.getAssignedRunway().getId();
-    }
-
-    /**
-     * Devuelve el retraso sufrido por el vuelo contiguo.
-     * Es responsabilidad del cliente asegurarse de que tiene contiguousFlight.
+     * Devuelve la diferencia entre tiempos de aterrizaje del vuelo actual y el asociado.
      *
      * @return retraso.
      */
-    public int getContiguousFlightDelay() {
-        return contiguousFlight.getDelay();
+    public int getContiguousFlightDifference() {
+        return contiguousFlight == null ? 0 : Math.abs(this.getATA() - contiguousFlight.getATA());
     }
 
     /**
