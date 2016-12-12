@@ -3,6 +3,9 @@ package com.davazriel.airtafficcontroller.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+
+import com.davazriel.airtafficcontroller.model.Flight.PlaneType;
 
 /**
  * Modela un aeropuerto.
@@ -19,12 +22,12 @@ public class Airport {
      * @param numRunways   numero de pistas.
      * @param waitingTimes tiempos de espera.
      */
-    public Airport(int numRunways, int[][] waitingTimes) {
+    public Airport(int numRunways, int[][] waitingTimes, Map<Integer, List<PlaneType>> restrictions) {
         flights = new ArrayList<>();
         // Create runways
         runways = new Runway[numRunways];
         for (int i = 0; i < numRunways; i++) {
-            runways[i] = new Runway(i, this);
+            runways[i] = new Runway(i, this, restrictions.get(i));
         }
         // Get waiting times
         this.waitingTimes = waitingTimes;
