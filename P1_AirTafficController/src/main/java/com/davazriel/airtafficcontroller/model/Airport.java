@@ -101,33 +101,15 @@ public class Airport {
 
     /**
      * Devuelve el numero de restricciones de pista violadas.
-     *
-     * @return el sumatorio de las restricciones de pista violadas.
      */
     public int getAccumulatedRunwayRestrictionViolations() {
         return Arrays.stream(runways).mapToInt(Runway::getViolationsRunwayRestriction).sum();
     }
 
     /**
-     * Devuelve el numero de restricciones de vuelos consecutivos violadas.
-     *
-     * @return el sumatorio de las restriciones de vuelos consecutivos violadas.
+     * Devuelve el acumulado de diferencias entre tiempo de aterrizaje de vuelos asociados.
      */
     public int getAccumulatedConsecutiveFlightRestriction() {
-        int numFlightRestrictionsViolated = 0;
-        int accumulatedDelayInNotViolated = 0;
-
-        for (Flight f : flights) {
-            if (f.hasContiguousFlight()) {
-                if (f.isFlightRestrictionViolated()) {
-                    // Restricción violada
-                    numFlightRestrictionsViolated++;
-                } else {
-                    // Misma pista
-                    accumulatedDelayInNotViolated += f.getContiguousFlightDelay();
-                }
-            }
-        }
-        return numFlightRestrictionsViolated * getAccumulatedDelay() + accumulatedDelayInNotViolated;
+        return flights.stream().mapToInt(Flight::getContiguousFlightDifference).sum();
     }
 }
