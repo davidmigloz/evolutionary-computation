@@ -16,9 +16,7 @@ public class Flight {
 	private Flight contiguousFlight;
 
     public Flight(String id, PlaneType type, int[] runwayETAs) {
-        this.id = id;
-        this.type = type;
-        this.runwayETAs = runwayETAs;
+        this(id, type, runwayETAs, null);
     }
 
     public Flight(String id, PlaneType type, int[] runwayETAs, Flight contiguousFlight) {
@@ -27,9 +25,10 @@ public class Flight {
         this.runwayETAs = runwayETAs;
         this.contiguousFlight = contiguousFlight;
     }
-    
+
     /**
      * Devuelve el id del vuelo.
+     *
      * @return id.
      */
     public String getId() {
@@ -38,6 +37,7 @@ public class Flight {
 
     /**
      * Devuelve el tipo de avión.
+     *
      * @return tipo de avión.
      */
     public PlaneType getPlaneType() {
@@ -46,6 +46,7 @@ public class Flight {
 
     /**
      * Devuelve el tiempo estimado de llegada del avión.
+     *
      * @param runwayId id de la pista.
      * @return ETA.
      */
@@ -55,6 +56,7 @@ public class Flight {
 
     /**
      * Permite establecer el tiempo actual de llegada.
+     *
      * @param ATA ATA.
      */
     public void setATA(int ATA) {
@@ -63,6 +65,7 @@ public class Flight {
 
     /**
      * Permite establecer la pista asignada.
+     *
      * @param assignedRunway pista.
      */
     public void setAssignedRunway(Runway assignedRunway) {
@@ -71,16 +74,18 @@ public class Flight {
 
     /**
      * Devuelve la pista asignada.
+     *
      * @return pista asignada.
      */
-    public Runway getAssignedRunway(){
-    	return assignedRunway;
+    public Runway getAssignedRunway() {
+        return assignedRunway;
     }
 
     /**
      * Calcula el retraso que ha tenido el avión.
      * Considerando el mínimo ETA.
      * ATA - min(ETAs).
+     *
      * @return retraso.
      */
     @SuppressWarnings("OptionalGetWithoutIsPresent")
@@ -89,9 +94,36 @@ public class Flight {
         return ATA - minETA;
     }
 
-    
+    /**
+     * Comprueba si tiene vuelo contiguo o no.
+     *
+     * @return si tiene vuelo contiguo.
+     */
+    public boolean hasContiguousFlight() {
+        return contiguousFlight != null;
+    }
 
-	/**
+    /**
+     * Comprueba si el avión contiguo asociado ha aterrizado en la misma pista.
+     * Es responsabilidad del cliente asegurarse de que tiene contiguousFlight.
+     *
+     * @return si se ha cumplido la restricción o no.
+     */
+    public boolean isFlightRestrictionViolated() {
+        return this.getAssignedRunway().getId() != contiguousFlight.getAssignedRunway().getId();
+    }
+
+    /**
+     * Devuelve el retraso sufrido por el vuelo contiguo.
+     * Es responsabilidad del cliente asegurarse de que tiene contiguousFlight.
+     *
+     * @return retraso.
+     */
+    public int getContiguousFlightDelay() {
+        return contiguousFlight.getDelay();
+    }
+
+    /**
      * Tipo de avión.
      */
     public enum PlaneType {
@@ -108,7 +140,7 @@ public class Flight {
     }
     
     /**
-     * 
+     * Setter for contiguousFlight
      */
     public void setContiguousFlight(Flight contiguousFlight){
     	this.contiguousFlight = contiguousFlight;

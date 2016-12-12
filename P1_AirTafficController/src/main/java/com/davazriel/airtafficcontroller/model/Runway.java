@@ -1,6 +1,7 @@
 package com.davazriel.airtafficcontroller.model;
 
 import java.util.List;
+import com.davazriel.airtafficcontroller.model.Flight.PlaneType;
 
 /**
  * Modela una pista del aeropuerto.
@@ -11,19 +12,25 @@ public class Runway {
     private int id;
     private Airport airport;
     private int currentATA;
-    private Flight.PlaneType currentPlaneType;
-    private List<Flight.PlaneType> nonAllowedPlaneTypes;
+    private PlaneType currentPlaneType;
+    private List<PlaneType> notAllowedPlaneTypes;
     private int violatedRestriction;
-    
-    
+
     public Runway(int id, Airport airport) {
+        this(id, airport, null);
+    }
+
+    public Runway(int id, Airport airport, List<PlaneType> notAllowedPlaneTypes) {
         this.id = id;
         this.airport = airport;
+        this.notAllowedPlaneTypes = notAllowedPlaneTypes;
         this.currentATA = 0;
+        this.violatedRestriction = 0;
     }
 
     /**
      * Devuelve el id de la pista.
+     *
      * @return id.
      */
     public int getId() {
@@ -42,7 +49,7 @@ public class Runway {
      * Devuelve el tipo del avión que está aterrizando en la pista.
      * @return tipo del avión.
      */
-    public Flight.PlaneType getCurrentPlaneType() {
+    public PlaneType getCurrentPlaneType() {
         return currentPlaneType;
     }
 
@@ -52,26 +59,19 @@ public class Runway {
      * @param planeType tipo de avión.
      * @return cuando estará libre.
      */
-    public int getNextTimeRunwayAvailable(Flight.PlaneType planeType) {
-    	if(nonAllowedPlaneTypes.contains(planeType)){
-    		violatedRestriction++;
-    	}
+    public int getNextTimeRunwayAvailable(PlaneType planeType) {
         return currentPlaneType == null ? currentATA : currentATA + airport.getWaitingTime(currentPlaneType, planeType);
     }
 
-    /**
-     * Devuelve el numero de veces que se ha violado la restriccion de pista.
-     * @return El numero de veces.
-     */
-    public int getViolatedRestriction(){
-    	return violatedRestriction;
-    }
-    
     /**
      * Añadir llegada a la pista.
      * @param flight vuelo.
      */
     public void addArrival(Flight flight) {
+        // Check whether runway restriction is violated
+        if(notAllowedPlaneTypes.contains(flight.getPlaneType())){
+            violatedRestriction++;
+        }
         int minATA = getNextTimeRunwayAvailable(flight.getPlaneType());
         int ETA = flight.getETA(id);
         // Set new arrival details
@@ -79,5 +79,13 @@ public class Runway {
         currentPlaneType = flight.getPlaneType();
         flight.setATA(currentATA);
         flight.setAssignedRunway(this);
+    }
+
+    /**
+     * Devuelve el numero de veces que se ha violado la restriccion de pista.
+     * @return El numero de veces.
+     */
+    public int getViolationsRunwayRestriction(){
+        return violatedRestriction;
     }
 }

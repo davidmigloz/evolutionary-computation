@@ -9,112 +9,125 @@ import java.util.List;
  */
 public class Airport {
 
-	private int[][] waitingTimes;
-	private Runway[] runways;
-	private List<Flight> flights;
+    private int[][] waitingTimes;
+    private Runway[] runways;
+    private List<Flight> flights;
 
-	/**
-	 * Constructor del aeropuerto.
-	 * 
-	 * @param numRunways numero de pistas.
-	 * @param waitingTimes tiempos de espera.
-	 */
-	public Airport(int numRunways, int[][] waitingTimes) {
-		flights = new ArrayList<>();
-		// Create runways
-		runways = new Runway[numRunways];
-		for (int i = 0; i < numRunways; i++) {
-			runways[i] = new Runway(i, this);
-		}
-		// Get waiting times
-		this.waitingTimes = waitingTimes;
-	}
+    /**
+     * Constructor del aeropuerto.
+     *
+     * @param numRunways   numero de pistas.
+     * @param waitingTimes tiempos de espera.
+     */
+    public Airport(int numRunways, int[][] waitingTimes) {
+        flights = new ArrayList<>();
+        // Create runways
+        runways = new Runway[numRunways];
+        for (int i = 0; i < numRunways; i++) {
+            runways[i] = new Runway(i, this);
+        }
+        // Get waiting times
+        this.waitingTimes = waitingTimes;
+    }
 
-	/**
-	 * Planifica un vuelo. Asignándole la pista que le permita aterrizar lo antes posible.
-	 * 
-	 * @param flight vuelo.
-	 */
-	public void scheduleFlight(Flight flight) {
-		// Find runway with lowest time for landing
-		Runway runway = findBestRunway(flight.getPlaneType());
-		// Schedule flight in that runway
-		runway.addArrival(flight);
-		// Save flight
-		flights.add(flight);
-	}
+    /**
+     * Planifica un vuelo. Asignándole la pista que le permita aterrizar lo antes posible.
+     *
+     * @param flight vuelo.
+     */
+    public void scheduleFlight(Flight flight) {
+        // Find runway with lowest time for landing
+        Runway runway = findBestRunway(flight.getPlaneType());
+        // Schedule flight in that runway
+        runway.addArrival(flight);
+        // Save flight
+        flights.add(flight);
+    }
 
-	/**
-	 * Devuelve la pista con el menor tiempo de espera para el avión en concreto.
-	 * 
-	 * @param planeType tipo de avión.
-	 * @return mejor pista.
-	 */
-	private Runway findBestRunway(Flight.PlaneType planeType) {
-		Runway bestRunway = null;
-		int bestTime = Integer.MAX_VALUE;
-		// Get runway with the best time
-		for (Runway runway : runways) {
-			int nextTimeAvailable = runway.getNextTimeRunwayAvailable(planeType);
-			if (nextTimeAvailable < bestTime) {
-				bestRunway = runway;
-				bestTime = nextTimeAvailable;
-			}
-		}
-		return bestRunway;
-	}
+    /**
+     * Devuelve la pista con el menor tiempo de espera para el avión en concreto.
+     *
+     * @param planeType tipo de avión.
+     * @return mejor pista.
+     */
+    private Runway findBestRunway(Flight.PlaneType planeType) {
+        Runway bestRunway = null;
+        int bestTime = Integer.MAX_VALUE;
+        // Get runway with the best time
+        for (Runway runway : runways) {
+            int nextTimeAvailable = runway.getNextTimeRunwayAvailable(planeType);
+            if (nextTimeAvailable < bestTime) {
+                bestRunway = runway;
+                bestTime = nextTimeAvailable;
+            }
+        }
+        return bestRunway;
+    }
 
-	/**
-	 * Calcula lo que tiene que esperar un avión de un determinado tipo hasta poder
-	 * aterrizar dependiendo del avión que haya aterrizado delante de él.
-	 * 
-	 * @param before primer avión en aterrizar.
-	 * @param after segundo avión en aterrizar.
-	 * @return tiempo que el segundo tiene que esperar.
-	 */
-	public int getWaitingTime(Flight.PlaneType before, Flight.PlaneType after) {
-		return waitingTimes[before.getIndex()][after.getIndex()];
-	}
+    /**
+     * Calcula lo que tiene que esperar un avión de un determinado tipo hasta poder
+     * aterrizar dependiendo del avión que haya aterrizado delante de él.
+     *
+     * @param before primer avión en aterrizar.
+     * @param after  segundo avión en aterrizar.
+     * @return tiempo que el segundo tiene que esperar.
+     */
+    public int getWaitingTime(Flight.PlaneType before, Flight.PlaneType after) {
+        return waitingTimes[before.getIndex()][after.getIndex()];
+    }
 
-	/**
-	 * Calcula el retraso acumulado (sumatorio de todos los ATA-min(ETAs)).
-	 * @return retraso acumulado.
-	 */
-	public int getAccumulatedDelay() {
-		int total = 0;
-		for (Flight flight : flights) {
-			total += flight.getDelay();
-		}
-		return total;
-	}
+    /**
+     * Calcula el retraso acumulado (sumatorio de todos los ATA-min(ETAs)).
+     *
+     * @return retraso acumulado.
+     */
+    public int getAccumulatedDelay() {
+        int total = 0;
+        for (Flight flight : flights) {
+            total += flight.getDelay();
+        }
+        return total;
+    }
 
-	/**
-	 * Devuelve el ATA del último vuelo.
-	 * @return ATA máximo.
-	 */
-	@SuppressWarnings("OptionalGetWithoutIsPresent")
+    /**
+     * Devuelve el ATA del último vuelo.
+     *
+     * @return ATA máximo.
+     */
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
     public int getMaxATA() {
-		return Arrays.stream(runways).mapToInt(Runway::getCurrentATA).min().getAsInt();
-	}
-	
-	/**
-	 * Devuelve el numero de restricciones de pista violadas.
-	 * @return el sumatorio de las restricciones de pista violadas.
-	 */
-	public int getAccumulatedRunwayRestrictionViolations(){
-		List<Runway> runwaysList = new ArrayList<>();
-		for (Runway runway : runways) {
-			runwaysList.add(runway);
-		}
-		return runwaysList.stream().mapToInt((r)->r.getViolatedRestriction()).sum();
-	}
+        return Arrays.stream(runways).mapToInt(Runway::getCurrentATA).min().getAsInt();
+    }
 
-	/**
-	 * Devuelve el numero de restricciones de vuelos consecutivos violadas.
-	 * @return el sumatorio de las restriciones de vuelos consecutivos violadas.
-	 */
-	public int getAccumulatedConsecutiveFlightRestriction(){
-		// TODO
-		return -1;
-	}
+    /**
+     * Devuelve el numero de restricciones de pista violadas.
+     *
+     * @return el sumatorio de las restricciones de pista violadas.
+     */
+    public int getAccumulatedRunwayRestrictionViolations() {
+        return Arrays.stream(runways).mapToInt(Runway::getViolationsRunwayRestriction).sum();
+    }
+
+    /**
+     * Devuelve el numero de restricciones de vuelos consecutivos violadas.
+     *
+     * @return el sumatorio de las restriciones de vuelos consecutivos violadas.
+     */
+    public int getAccumulatedConsecutiveFlightRestriction() {
+        int numFlightRestrictionsViolated = 0;
+        int accumulatedDelayInNotViolated = 0;
+
+        for (Flight f : flights) {
+            if (f.hasContiguousFlight()) {
+                if (f.isFlightRestrictionViolated()) {
+                    // Restricción violada
+                    numFlightRestrictionsViolated++;
+                } else {
+                    // Misma pista
+                    accumulatedDelayInNotViolated += f.getContiguousFlightDelay();
+                }
+            }
+        }
+        return numFlightRestrictionsViolated * getAccumulatedDelay() + accumulatedDelayInNotViolated;
+    }
 }
