@@ -76,7 +76,7 @@
 % Cover
 % -------------------------------------------------------------
 \author{David Miguel Lozano \ Javier Martínez Riberas}
-\title{P3 Multilayer Perceptron (MLP)}
+\title{P5: AirTafficController v2}
 \date{07-11-2016}
 
 \begin{titlepage}
@@ -87,10 +87,10 @@
 	\vfill
 	{\scshape\Large Computación Neuronal y Evolutiva \par}
 	\HRule{2pt}
-	{\huge\bfseries P4: AirTafficController \par}
+	{\huge\bfseries P5: AirTafficController v2 \par}
 	\HRule{2pt}
 	\\ [0.5cm]
-	{Analizar y desarrollar un algoritmo genético que realice el cálculo automático de la distribución más conveniente de vuelos que solicitan aterrizar en un determinado aeropuerto.}
+	{Analizar y desarrollar un algoritmo genético que realice el cálculo automático de la distribución más conveniente de vuelos que solicitan aterrizar en un determinado aeropuerto sujetos a varias restricciones.}
 	\vfill
 	Estudiantes:\par
 	{\Large\scshape David Miguel Lozano \\ Javier Martínez Riberas \par}
@@ -119,21 +119,29 @@
 \section{Introducción}
 
 El objetivo de esta práctica es desarollar un programa que implemente un algoritmo genético que permita al usuario realizar el calculo automático de la distribución
-más conveniente de vuelos que solicitan aterrizar en un determinado aeropuerto. Así mismo, se analizará la conveniencia de la solución propuesta y se reflexionará sobre los resultados obtenidos.
+más conveniente de vuelos que solicitan aterrizar en un determinado aeropuerto sujetos a varias restricciones. Se experimentará modelando el problema con restricciones débiles y empleando optimización multi-objetivo. Así mismo, se analizará la conveniencia de la solución propuesta y se reflexionará sobre los resultados obtenidos.
 
 La aplicación tiene que ser capáz de adaptarse a las siguientes condiciones:
 
 \begin{itemize}[noitemsep]
 	\item El número de pistas del aeropuerto debe ser un parámetro configurable.
+	\item Cada pista acepta un conjunto determinado de tipos de aviones.	
 	\item El número de aviones en cada situación puede variar.
 	\item Los aviones tienen un programa de vuelo que incluye:
 	\begin{itemize}[noitemsep]
 		\item ETA (\textit{Estimated Time of Arrival}): tiempo estimado de llegada calculado en el momento del despegue.
 		\item Tipo de avión: heavy / big / small. Condiciona el tiempo necesario para su aterrizaje.
+	  \item Vuelo asociado (opcional): vuelo que se desea que aterrice con la menor diferencia de tiempo del vuelo actual.
 	\end{itemize}
 \end{itemize}
 
-El programa tiene que conseguir obtener de forma automática la mejor asignación posible de vuelos a aterrizar en cada pista, de forma que el tiempo de espera de los vuelos en su conjunto sea el menor posible.
+El programa tiene que conseguir obtener de forma automática la mejor asignación posible de vuelos a aterrizar en cada pista, de forma que se cumplan los siguientes objetivos:
+
+\begin{itemize}[noitemsep]
+	\item El tiempo de espera de los vuelos en su conjunto sea el menor posible.
+	\item Solo los tipos de aviones autorizados aterricen en las pistas.
+	\item Que el tiempo transcurrido entre aterrizajes de vuelos asociados sea el menor posible. 
+\end{itemize}
 
 Para su resolución se hará uso de la librería para Java JCLEC (Java Class Library for Evolutionary Computation) \citep{web:jclec}. La cual, proporciona un framework para programación evolutiva que da soporte, entre otras cosas, a los algoritmos genéticos.
 
@@ -245,304 +253,15 @@ A continuación exponemos los resultados obtenidos.
 
 Todos los gráficos y logs generados se encuentran disponibles en: \href{https://github.com/davidmigloz/evolutionary-computation/tree/master/P1\_AirTafficController/data}{Data}.
 
-\subsection{Resultados con los diferentes ficheros de prueba}
-
-Se ejecutó el algoritmo con los diferentes ficheros de prueba y la siguiente configuración fija (a parte del resto de parámetros por defecto explicados en la sección anterior):
-
-\begin{itemize}[noitemsep]
-	\item Selección: \lstinline|RouletteSelector|.
-	\item Cruce: \lstinline|OrderPMXCrossover|.
-	\item Mutación: \lstinline|Order2OptMutator|.	
-\end{itemize}
-
-En la siguiente tabla se muestran los fitness obtenidos para cada uno de los test junto con el instante en el que se realizó el último aterrizaje:
-
-\newpage
-
-\begin{table}[!ht]
-\centering
-\begin{tabular}{@{}lllll@{}}
-\toprule
-Fichero            & Mejor & Peor & Medio & Último aterrizaje \\ \midrule
-IncomingFlights\_1 & 30    & 119  & 114   & 13                \\
-IncomingFlights\_2 & 215   & 689  & 595   & 47                \\
-IncomingFlights\_3 & 27    & 172  & 170   & 19                \\
-IncomingFlights\_4 & 147   & 531  & 382   & 16                \\ \bottomrule
-\end{tabular}
-\caption{Resultados ficheros de test}
-\end{table}
-
-\subsection{Resultados con los diferentes operadores genéticos}
-
-A continuación se exponen los resultados de comparar diferentes implementaciones de los operadores genéticos. El archivo de pruebas utilizado fue \lstinline|IncomingFlights_4|.
-
-\subsubsection{Selección: RouletteSelector vs. RandomSelector}
-
-El resto de parámetros se fijo a:
-
-\begin{itemize}[noitemsep]
-	\item Cruce: \lstinline|OrderPMXCrossover|.
-	\item Mutación: \lstinline|Order2OptMutator|.	
-\end{itemize}
-
-Resultados:
-
-\begin{table}[!ht]
-\centering
-\begin{tabular}{@{}lllll@{}}
-\toprule
-Algoritmo        & Mejor & Peor & Medio & Último aterrizaje \\ \midrule
-RouletteSelector & 147   & 531  & 328   & 16                \\
-RandomSelector   & 90    & 427  & 259   & 14                \\ \bottomrule
-\end{tabular}
-\caption{RouletteSelector vs. RandomSelector}
-\end{table}
-
-\begin{figure}[!ht]
-\centering
-\begin{minipage}{.5\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{RouletteSelector.png}
-  \caption{RouletteSelector}
-\end{minipage}%
-\begin{minipage}{.5\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{RandomSelector.png}
-  \caption{RandomSelector}
-\end{minipage}
-\end{figure}
-
-\subsubsection{Cruce: OrderOXCrossover vs. OrderPMXCrossover}
-
-El resto de parámetros se fijo a:
-
-\begin{itemize}[noitemsep]
-	\item Selección: \lstinline|RouletteSelector|.
-	\item Mutación: \lstinline|Order2OptMutator|.	
-\end{itemize}
-
-Resultados:
- 
-\begin{table}[!ht]
-\centering
-\begin{tabular}{@{}lllll@{}}
-\toprule
-Algoritmo         & Mejor & Peor & Medio & Último aterrizaje \\ \midrule
-OrderOXCrossover  & 137   & 487  & 290   & 17                \\
-OrderPMXCrossover & 147   & 531  & 382   & 16                \\ \bottomrule
-\end{tabular}
-\caption{OrderOXCrossover vs. OrderPMXCrossover}
-\end{table}
-
-\begin{figure}[!ht]
-\centering
-\begin{minipage}{.5\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{OrderOXCrossover.png}
-  \caption{OrderOXCrossover}
-\end{minipage}%
-\begin{minipage}{.5\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{OrderPMXCrossover.png}
-  \caption{OrderPMXCrossover}
-\end{minipage}
-\end{figure}
-
-\subsubsection{Mutación: Order2OptMutator vs. OrderSublistMutator}
-
-El resto de parámetros se fijo a:
-
-\begin{itemize}[noitemsep]
-	\item Selección: \lstinline|RouletteSelector|.
-	\item Cruce: \lstinline|OrderPMXCrossover|.
-\end{itemize}
-
-Resultados:
-
-\begin{table}[!ht]
-\centering
-\begin{tabular}{@{}lllll@{}}
-\toprule
-Algoritmo           & Mejor & Peor & Medio & Último aterrizaje \\ \midrule
-Order2OptMutator    & 147   & 531  & 382   & 16                \\
-OrderSublistMutator & 150   & 487  & 388   & 17                \\ \bottomrule
-\end{tabular}
-\caption{Order2OptMutator vs. OrderSublistMutator}
-\end{table}
-
-\begin{figure}[!ht]
-\centering
-\begin{minipage}{.5\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{Order2OptMutator.png}
-  \caption{Order2OptMutator}
-\end{minipage}%
-\begin{minipage}{.5\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{OrderSublistMutator.png}
-  \caption{OrderSublistMutator}
-\end{minipage}
-\end{figure}
-
-\subsection{Resultados con variación de los parámetros}
-
-A continuación se exponen los resultados de variar ciertos parámetros numéricos del algoritmo. El archivo de pruebas utilizado fue \lstinline|IncomingFlights_4|. Las implementaciones de los operadores genéticos fueron:
-
-\begin{itemize}[noitemsep]
-	\item Selección: \lstinline|RouletteSelector|.
-	\item Cruce: \lstinline|OrderPMXCrossover|.
-	\item Mutación: \lstinline|Order2OptMutator|.	
-\end{itemize}
-
-\subsubsection{Tamaño de la población}
-
-\begin{table}[!ht]
-\centering
-\begin{tabular}{@{}lllll@{}}
-\toprule
-Tamaño & Mejor & Peor & Medio & Último aterrizaje \\ \midrule
-50     & 158   & 465  & 327   & 16                \\
-500    & 112   & 557  & 508   & 15                \\ \bottomrule
-\end{tabular}
-\caption{50 vs. 500}
-\end{table}
-
-\begin{figure}[!ht]
-\centering
-\begin{minipage}{.5\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{50tam.png}
-  \caption{50}
-\end{minipage}%
-\begin{minipage}{.5\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{500tam.png}
-  \caption{500}
-\end{minipage}
-\end{figure}
-
-\subsubsection{Probabilidad de cruce}
-
-\begin{table}[!ht]
-\centering
-\begin{tabular}{@{}lllll@{}}
-\toprule
-Probabilidad & Mejor & Peor & Medio & Último aterrizaje \\ \midrule
-50\%         & 135   & 529  & 440   & 15                \\
-90\%         & 128   & 429  & 389   & 17                \\ \bottomrule
-\end{tabular}
-\caption{50\% vs. 90\%}
-\end{table}
-
-\begin{figure}[!ht]
-\centering
-\begin{minipage}{.5\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{50cruce.png}
-  \caption{50\%}
-\end{minipage}%
-\begin{minipage}{.5\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{90cruce.png}
-  \caption{90\%}
-\end{minipage}
-\end{figure}
-
-\subsubsection{Probabilidad de mutación}
-
-\begin{table}[!ht]
-\centering
-\begin{tabular}{@{}lllll@{}}
-\toprule
-Probabilidad & Mejor & Peor & Medio & Último aterrizaje \\ \midrule
-5\%          & 118   & 473  & 409   & 18                \\
-20\%         & 126   & 488  & 308   & 17                \\ \bottomrule
-\end{tabular}
-\caption{5\% vs. 20\%}
-\end{table}
-
-\begin{figure}[!ht]
-\centering
-\begin{minipage}{.5\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{5mut.png}
-  \caption{5\%}
-\end{minipage}%
-\begin{minipage}{.5\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{20mut.png}
-  \caption{20\%}
-\end{minipage}
-\end{figure}
+TODO
 
 \section{Análisis}
 
-Tras analizar los resultados detenidamente, hemos encontrado varias situaciones en las que no hemos sido capaces de decantarnos por una de las condiguraciones analizadas para que el algoritmo fuera capaz de seguir mejorando los individuos generación tras generación.
-
-Principalmente, creemos que el mayor problema de nuestra implementación ha sido el uso de \lstinline|OrderArrayIndividual|. Hemos comprobado que no es nada bueno para realizar operacines de cruce sobre él. Ya que, dos padres con buen \textit{fitness} pueden dar lugar a dos nuevos individuos no tan buenos.
-
-Por ejemplo, partiendo de los siguientes individuos:
-
-\lstinline|(5 10 17 16 11 19 20 13 14 22 18 7 9 4 1 3 12 21 8 6 2 15 0 23)|, \\ 
-\lstinline|fitness=222|
-
-\lstinline|(16 22 19 8 10 12 2 4 1 9 5 3 7 0 11 14 6 15 20 21 17 13 18 23)|, \\ \lstinline|fitnesse=237|
-
-El resultado de la operación de cruce podría haber sido perfectamente el siguiente (ejemplo real):
-
-\lstinline|(8 10 17 16 11 19 20 13 14 22 18 12 2 4 1 9 5 3 7 0 6 15 21 23)|, \\ 
-\lstinline|fitness=216|
-
-\lstinline|(17 22 19 8 10 12 2 4 1 9 5 16 11 20 13 14 18 7 3 21 6 15 0 23)|, \\ 
-\lstinline|fitness=251|
-
-Como podemos observar, es cierto que ha mejorado el \textit{fitness} de uno de los individuos respecto al del mejor padre. Pero tambien es cierto que el del otro hijo a empeorado bastante, al igual que la media, que ha empeorado desde 229,5 hasta 233,5.
-
-Achacamos a este problema la gran varianza que hemos obtenido en todos los resultados. Como se puede ver en la mayoría de los gráficos, la media (línea verde) no consigue tener una tendencia decreciente, sino que varia en gran medida a lo largo de las generaciones.
-
-Otro motivo que creemos puede estar influenciando los resultados es el enorme espacio de busqueda. La representación elegida no localiza a individuos similares en regiones similares, sino que podemos tener un resultado muy bueno y al lado uno muy malo. Esto hace que al algoritmo le sea imposible dar con resultados estables.
-
-Otro problema que nos hemos encontrado a la hora de realizar la practica ha sido la dificultad de repetir un buen número de veces cada experimento para que la aleatoriedad no sea la principal causa de obtener un resultado más o menos exitoso.
-
-Una vez habiendo comentado el porque de la forma de la gráfica y los problemas para encontrar resultados validos a nivel científico, vamos a comentar los resultados de las comparaciones de algoritmos que hemos comentado antes y que se nos pide:
-
-Dicho esto, pasamos a analizar individualmente los resultados. En cuanto a los distintos operadores genéticos:
-
-\textbf{Selección: RouletteSelector vs. RandomSelector}
-
-\lstinline|RandomSelector| ha proporcionado el mejor resultado. Podemos atribuir esto a lo comentado anteriormente, no porque el padre sea bueno, vamos a obtener necesariamente hijos buenos. Por esto, el aleatorio funciona bien en este caso.
-
-\textbf{Cruce: OrderOXCrossover vs. OrderPMXCrossover}
-
-Podemos ver que OX da ligeramente mejores resultados que PMX, aunque no podemos decir que sean significativos. Hay que tener en cuenta que PMX explora una mayor región del espacio, de manera que produce más picos tanto hacia los mínimos como hacia los máximos, lo que le puede llevar a encontrar el mejor mínimo.
-
-\textbf{Mutación: Order2OptMutator vs. OrderSublistMutator}
-
-Se puede observar que 2Opt da mejores resultados. En parte tiene sentido, ya que al modificar menos elementos consigue un punto muy diferente del espacio de busqueda, pero con un \textit{fitness} suficientemente parecido como para que pueda llegar a reproducirse con más probabilidad que Sublist. Ya que este último puede modificar en mayor medida el individuo, pero dejando \textit{fitness} malos para que el cruce sea consistente.
-	 
-En cuanto a los resultados obtenidos con la variación de parámetros:
-
-\textbf{Tamaño de la población}
-
-El parametro de tamaño de la población se comporta como esperabamos: cuanto mayor sea, mejores resultados encuentra (por pura fuerza bruta). Sin embargo, con menos individuos la media es mejor.
-	 
-\textbf{Probabilidad de cruce}
-
-El comportamiento al reducir este parametro es una exploración más lenta del espacio de busqueda. En nuestro ejemplo específico, acaba encontrando resultados mejores pero creemos que es por pura coincidencia. Aunque podría ser que los óptimos estén fuera de la región de óptimos locales, donde indiden la mayoria de ejecuciones.
-	 
-\textbf{Probabilidad de mutacion}
-	 
-Según se aumenta este parametro más espacios alejados de los óptimos actuales explora el algoritmo. Que al aumentar la probabilidad haya encontrado mejores resultados, nos hace sospechar que las mejores soluciones están lejos de algún grupo de óptimos locales.
-
-Para terminar el análisis, comentar que se ha descubierto un bug en el generador de números aleatorios de la librería JCLEC. Al generar un array ordenado, la ultima posición de dicho array acaba valiendo siempre la longitud del array menos uno.
+TODO
 	 
 \section{Conclusiones}
 
-\begin{itemize}[noitemsep]
-	\item El uso de la librería JCLEC ha sido un tanto contraproducente, habiendo perdido demasiado tiempo en resolver problemas específicos de esta, en vez de centrarnos en encontrar la mejor solución a nuestro problema.
-	\item Utilizar \lstinline|OrderArrayIndividual| para representar los individuos no ha sido la mejor elección. Ya que, los mejores y los peores individuos no están relacionados espacialmente.
-	\item La gran varianza en los resultados se podría haber minimizado realizando varias ejecuciones de cada uno. Sería una característica interesante a implementar en JCLEC.
-\end{itemize}
+TODO
 
 % -------------------------------------------------------------
 % Bibliography
