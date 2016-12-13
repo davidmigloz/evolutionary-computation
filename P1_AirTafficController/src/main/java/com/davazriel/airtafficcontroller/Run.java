@@ -14,14 +14,6 @@ public class Run {
                 newArgs[0] = "src/main/resources/cfg/ScheduleFlights2.cfg";
                 break;
 
-            case "3":
-                newArgs[0] = "src/main/resources/cfg/ScheduleFlights3.cfg";
-                break;
-
-            case "4":
-                newArgs[0] = "src/main/resources/cfg/ScheduleFlights4.cfg";
-                break;
-
             default:
                 newArgs[0] = args[0];
                 break;

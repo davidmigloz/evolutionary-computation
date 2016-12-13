@@ -44,21 +44,21 @@ public class SimplisticEvaluate {
 		int[] genotype ={};
 			//{17,22,19,8,10,12,2,4,1,9,5,16,11,20,13,14,18,7,3,21,6,15,0,23}; 
 			//{8,10,17,16,11,19,20,13,14,22,18,12,2,4,1,9,5,3,7,0,6,15,21,23};
-		System.out.println(evaluate1(genotype, flights, nRunways, waitTimes));
+		//System.out.println(evaluate1(genotype, flights, nRunways, waitTimes));
 		
 	}
 
-	public static int evaluate1(int[] genotype, List<Flight> flights, int nRunways, int[][] waitTimes) {
-		// Create airport
-		Airport airport = new Airport(nRunways, waitTimes);
-		// schedule flights: genotype order = arrival order; genotipe values =
-		// flight number
-		for (int vuelo : genotype) {
-			Flight flight = flights.get(vuelo);
-			airport.scheduleFlight(flight);
-		}
-		// calculate fitness
-		return airport.getAccumulatedDelay();
-	}
+//	public static int evaluate1(int[] genotype, List<Flight> flights, int nRunways, int[][] waitTimes) {
+//		// Create airport
+//		Airport airport = new Airport(nRunways, waitTimes);
+//		// schedule flights: genotype order = arrival order; genotipe values =
+//		// flight number
+//		for (int vuelo : genotype) {
+//			Flight flight = flights.get(vuelo);
+//			airport.scheduleFlight(flight);
+//		}
+//		// calculate fitness
+//		return airport.getAccumulatedDelay();
+//	}
 
 }

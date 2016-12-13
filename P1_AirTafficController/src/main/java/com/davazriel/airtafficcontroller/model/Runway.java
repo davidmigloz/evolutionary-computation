@@ -16,10 +16,7 @@ public class Runway {
     private List<PlaneType> notAllowedPlaneTypes;
     private int violatedRestriction;
 
-    public Runway(int id, Airport airport) {
-        this(id, airport, null);
-    }
-
+    
     public Runway(int id, Airport airport, List<PlaneType> notAllowedPlaneTypes) {
         this.id = id;
         this.airport = airport;
@@ -69,7 +66,7 @@ public class Runway {
      */
     public void addArrival(Flight flight) {
         // Check whether runway restriction is violated
-        if(notAllowedPlaneTypes.contains(flight.getPlaneType())){
+        if(notAllowedPlaneTypes!=null && notAllowedPlaneTypes.contains(flight.getPlaneType())){
             violatedRestriction++;
         }
         int minATA = getNextTimeRunwayAvailable(flight.getPlaneType());
