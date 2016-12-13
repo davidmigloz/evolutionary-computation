@@ -18,8 +18,8 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 
 /**
- * Clase que extiende AbstractEvaluator (para que tenga el metodo evaluate) e
- * implementa la interfaz IConfigure (para que tenga el metodo configure).
+ * Clase que extiende AbstractEvaluator (para que tenga el método evaluate) e
+ * implementa la interfáz IConfigure (para que tenga el método configure).
  *
  * @author David Miguel
  * @author Javier Martínez
@@ -183,7 +183,7 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 			String[] consFlightsString = dataReader.readLine();
 			int i = 0;
 			do {
-				contiguousFlightsRest.put(consFlightsString[i], consFlightsString[(i++)]);
+				contiguousFlightsRest.put(consFlightsString[i], consFlightsString[(++i)]);
 			} while (i < consFlightsString.length - 1);
 		}
 		dataReader.closeFile();
