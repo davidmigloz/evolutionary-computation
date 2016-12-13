@@ -1,24 +1,31 @@
 package com.davazriel.airtafficcontroller.algo;
 
-import com.davazriel.airtafficcontroller.model.Airport;
-import com.davazriel.airtafficcontroller.model.Flight;
-import com.davazriel.airtafficcontroller.model.Flight.PlaneType;
-import com.davazriel.airtafficcontroller.utils.DataReader;
-import net.sf.jclec.IConfigure;
-import net.sf.jclec.IFitness;
-import net.sf.jclec.IIndividual;
-import net.sf.jclec.base.AbstractEvaluator;
-import net.sf.jclec.fitness.CompositeFitness;
-import net.sf.jclec.fitness.CompositeFitnessComparator;
-import net.sf.jclec.fitness.ParetoComparator;
-import net.sf.jclec.fitness.SimpleValueFitness;
-import net.sf.jclec.fitness.ValueFitnessComparator;
-import net.sf.jclec.orderarray.OrderArrayIndividual;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.configuration.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import com.davazriel.airtafficcontroller.model.Airport;
+import com.davazriel.airtafficcontroller.model.Flight;
+import com.davazriel.airtafficcontroller.model.Flight.PlaneType;
+import com.davazriel.airtafficcontroller.utils.DataReader;
+
+import net.sf.jclec.IConfigure;
+import net.sf.jclec.IFitness;
+import net.sf.jclec.IIndividual;
+import net.sf.jclec.base.AbstractEvaluator;
+import net.sf.jclec.fitness.CompositeValueFitness;
+import net.sf.jclec.fitness.ParetoComparator;
+import net.sf.jclec.fitness.SimpleValueFitness;
+import net.sf.jclec.fitness.ValueFitnessComparator;
+import net.sf.jclec.orderarray.OrderArrayIndividual;
 
 /**
  * Clase que extiende AbstractEvaluator (para que tenga el metodo evaluate) e
@@ -41,7 +48,7 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 	/**
 	 * Comparador para las fitness.
 	 */
-	private Comparator<IFitness> comparator;
+	private ParetoComparator comparator;
 
 	/**
 	 * Archivo donde estan los vuelos.
@@ -116,7 +123,7 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 		new SimpleValueFitness(airport.getAccumulatedRunwayRestrictionViolations()),
 		new SimpleValueFitness(airport.getAccumulatedConsecutiveFlightRestriction())};
 		// Calculate fitness
-		ind.setFitness(new CompositeFitness(fitness));
+		ind.setFitness(new CompositeValueFitness(fitness));
 		// Log last landing
 		logger.debug(Arrays.toString(genotype) + ":" + airport.getMaxATA());
 	}
@@ -127,7 +134,13 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 	@Override
 	public Comparator<IFitness> getComparator() {
 		if (comparator == null) {
+			Comparator<IFitness> comparators[] = new Comparator[3];
+			comparators[0] = new ValueFitnessComparator(MINIMIZE);
+			comparators[1] = new ValueFitnessComparator(MINIMIZE);
+			comparators[2] = new ValueFitnessComparator(MINIMIZE);
+			
 			comparator = new ParetoComparator();
+			comparator.setComponentComparators(comparators);
 		}
 		return comparator;
 	}
