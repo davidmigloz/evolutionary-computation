@@ -69,7 +69,7 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 	/**
 	 * Margen de tiempo entre aterrizajes dependiendo del tipo de avión.
 	 */
-	private int[][] waitTimes;
+	private int[][] waitingTimes;
 
 	/**
 	 * Vuelos que recibimos.
@@ -100,7 +100,7 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 		// Individual genotype
 		int[] genotype = ((OrderArrayIndividual) ind).getGenotype();
 		// Create airport
-		Airport airport = new Airport(nRunways, waitTimes, runwayRest);
+		Airport airport = new Airport(nRunways, waitingTimes, runwayRest);
 		// Schedule flights: Genotype order = arrival order; genotipe values =
 		// flight number
 		List<Flight> flightsList = new ArrayList<>(flights.values());
@@ -141,14 +141,16 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 		this.runwayRestrictionsFile = conf.getString("[@runway-file]");
 		this.contiguousFlightsFile = conf.getString("[@consecutive-flights-file]");
 
-		String[] flightString = null;
-
 		DataReader dataReader = new DataReader();
+
+		// Parse waiting times
 		dataReader.openFile(waitTimesFile);
-		waitTimes = dataReader.readMatrix(3, 3);
+		waitingTimes = dataReader.readMatrix(3, 3);
 		dataReader.closeFile();
 
+		// Parse flights
 		flights = new LinkedHashMap<>();
+		String[] flightString = null;
 		dataReader.openFile(flightsFile);
 		while (dataReader.ready()) {
 			flightString = dataReader.readLine();
@@ -160,6 +162,7 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 		}
 		dataReader.closeFile();
 
+		// Parse runway restrictions
 		runwayRest = new HashMap<>();
 		dataReader.openFile(runwayRestrictionsFile);
 		while (dataReader.ready()) {
@@ -173,10 +176,7 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 		}
 		dataReader.closeFile();
 
-		/*
-	  Mapa donde se guardan los aviones y las restricciones de llegada como <id
-	  avion>-><id avion siguiente>
-	 */
+		// Parse contiguous flights restrictions
 		Map<String, String> contiguousFlightsRest = new HashMap<>();
 		dataReader.openFile(contiguousFlightsFile);
 		while (dataReader.ready()) {
@@ -188,6 +188,7 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 		}
 		dataReader.closeFile();
 
+		// Add contiguous flights restrictions to flight objects
 		for(String flightId : contiguousFlightsRest.keySet()) {
 			Flight contiguousFlight = flights.get(contiguousFlightsRest.get(flightId));
 			flights.get(flightId).setContiguousFlight(contiguousFlight);
