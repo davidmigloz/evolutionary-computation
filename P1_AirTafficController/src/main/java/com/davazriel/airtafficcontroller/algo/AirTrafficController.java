@@ -8,6 +8,9 @@ import net.sf.jclec.IConfigure;
 import net.sf.jclec.IFitness;
 import net.sf.jclec.IIndividual;
 import net.sf.jclec.base.AbstractEvaluator;
+import net.sf.jclec.fitness.CompositeFitness;
+import net.sf.jclec.fitness.CompositeFitnessComparator;
+import net.sf.jclec.fitness.ParetoComparator;
 import net.sf.jclec.fitness.SimpleValueFitness;
 import net.sf.jclec.fitness.ValueFitnessComparator;
 import net.sf.jclec.orderarray.OrderArrayIndividual;
@@ -108,11 +111,12 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 			Flight flight = flightsList.get(vuelo);
 			airport.scheduleFlight(flight);
 		}
+		SimpleValueFitness[] fitness = {
+		new SimpleValueFitness(airport.getAccumulatedDelay()),
+		new SimpleValueFitness(airport.getAccumulatedRunwayRestrictionViolations()),
+		new SimpleValueFitness(airport.getAccumulatedConsecutiveFlightRestriction())};
 		// Calculate fitness
-		ind.setFitness(new SimpleValueFitness(
-				airport.getAccumulatedDelay()
-						+ airport.getAccumulatedRunwayRestrictionViolations()*100
-						+ airport.getAccumulatedConsecutiveFlightRestriction()));
+		ind.setFitness(new CompositeFitness(fitness));
 		// Log last landing
 		logger.debug(Arrays.toString(genotype) + ":" + airport.getMaxATA());
 	}
@@ -123,7 +127,7 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 	@Override
 	public Comparator<IFitness> getComparator() {
 		if (comparator == null) {
-			comparator = new ValueFitnessComparator(MINIMIZE);
+			comparator = new ParetoComparator();
 		}
 		return comparator;
 	}
