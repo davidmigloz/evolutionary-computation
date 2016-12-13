@@ -21,6 +21,7 @@ public class Airport {
      *
      * @param numRunways   numero de pistas.
      * @param waitingTimes tiempos de espera.
+     * @param restrictions mapa indexado por id de pista y que contiene sus restricciones de tipos de aviones.
      */
     public Airport(int numRunways, int[][] waitingTimes, Map<Integer, List<PlaneType>> restrictions) {
         flights = new ArrayList<>();

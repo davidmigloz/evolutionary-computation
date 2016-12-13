@@ -15,12 +15,7 @@ import org.apache.commons.configuration.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * Clase que extiende AbstractEvaluator (para que tenga el metodo evaluate) e
@@ -53,7 +48,18 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 	/**
 	 * Archivo donde estan los tiempos de espera.
 	 */
-	private String waitTimesFileName;
+	private String waitTimesFile;
+
+	/**
+	 * Archivo donde estan las restricciones de cada pista.
+	 */
+	private String runwayRestrictionsFile;
+
+	/**
+	 * Archivo donde estan las restricciones de que avion tiene que ir detras de
+	 * cual otro
+	 */
+	private String contiguousFlightsFile;
 
 	/**
 	 * Número de pistas.
@@ -68,18 +74,7 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 	/**
 	 * Vuelos que recibimos.
 	 */
-	private List<Flight> flights;
-
-	/**
-	 * Archivo donde estan las restricciones de cada pista.
-	 */
-	private String runwayRestrictionsFile;
-
-	/**
-	 * Archivo donde estan las restricciones de que avion tiene que ir detras de
-	 * cual otro
-	 */
-	private String consecutiveFlightsFile;
+	private Map<String, Flight> flights;
 
 	/**
 	 * Mapa donde se guardan las restricciones de pista como <id
@@ -88,17 +83,10 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 	private Map<Integer, List<PlaneType>> runwayRest;
 
 	/**
-	 * Mapa donde se guardan los aviones y las restricciones de llegada como <id
-	 * avion>-><id avion siguiente>
-	 */
-	private HashMap<String, String> consecutiveFlightsRest;
-
-	/**
 	 * Constructor, inicializamos la lista para los vuelos.
 	 */
 	public AirTrafficController() {
 		super();
-		flights = new ArrayList<>();
 	}
 
 	/**
@@ -115,8 +103,9 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 		Airport airport = new Airport(nRunways, waitTimes, runwayRest);
 		// Schedule flights: Genotype order = arrival order; genotipe values =
 		// flight number
+		List<Flight> flightsList = new ArrayList<>(flights.values());
 		for (int vuelo : genotype) {
-			Flight flight = flights.get(vuelo);
+			Flight flight = flightsList.get(vuelo);
 			airport.scheduleFlight(flight);
 		}
 		// Calculate fitness
@@ -147,18 +136,19 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 	 */
 	@Override
 	public void configure(Configuration conf) {
-		this.waitTimesFileName = conf.getString("[@wait-times-file]");
+		this.waitTimesFile = conf.getString("[@wait-times-file]");
 		this.flightsFile = conf.getString("[@flights-file]");
 		this.runwayRestrictionsFile = conf.getString("[@runway-file]");
-		this.consecutiveFlightsFile = conf.getString("[@consecutive-flights-file]");
+		this.contiguousFlightsFile = conf.getString("[@consecutive-flights-file]");
 
 		String[] flightString = null;
 
 		DataReader dataReader = new DataReader();
-		dataReader.openFile(waitTimesFileName);
+		dataReader.openFile(waitTimesFile);
 		waitTimes = dataReader.readMatrix(3, 3);
 		dataReader.closeFile();
 
+		flights = new LinkedHashMap<>();
 		dataReader.openFile(flightsFile);
 		while (dataReader.ready()) {
 			flightString = dataReader.readLine();
@@ -166,16 +156,16 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 			for (int i = 2; i < flightString.length; i++) {
 				runwayETAs[i - 2] = Integer.valueOf(flightString[i]);
 			}
-			flights.add(new Flight(flightString[0], PlaneType.valueOf(flightString[1]), runwayETAs));
+			flights.put(flightString[0], new Flight(flightString[0], PlaneType.valueOf(flightString[1]), runwayETAs));
 		}
 		dataReader.closeFile();
 
-		runwayRest = new HashMap<Integer, List<PlaneType>>();
+		runwayRest = new HashMap<>();
 		dataReader.openFile(runwayRestrictionsFile);
 		while (dataReader.ready()) {
 			String[] runwayRestString = dataReader.readLine();
 			Integer runway = Integer.valueOf(runwayRestString[0]);
-			List<PlaneType> notAllowed = new ArrayList<PlaneType>();
+			List<PlaneType> notAllowed = new ArrayList<>();
 			for (int i = 1; i < runwayRestString.length; i++) {
 				notAllowed.add(PlaneType.valueOf(runwayRestString[i]));
 			}
@@ -183,16 +173,25 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 		}
 		dataReader.closeFile();
 
-		consecutiveFlightsRest = new HashMap<>();
-		dataReader.openFile(consecutiveFlightsFile);
+		/*
+	  Mapa donde se guardan los aviones y las restricciones de llegada como <id
+	  avion>-><id avion siguiente>
+	 */
+		Map<String, String> contiguousFlightsRest = new HashMap<>();
+		dataReader.openFile(contiguousFlightsFile);
 		while (dataReader.ready()) {
 			String[] consFlightsString = dataReader.readLine();
 			int i = 0;
 			do {
-				consecutiveFlightsRest.put(consFlightsString[i], consFlightsString[(i++)]);
+				contiguousFlightsRest.put(consFlightsString[i], consFlightsString[(i++)]);
 			} while (i < consFlightsString.length - 1);
 		}
 		dataReader.closeFile();
+
+		for(String flightId : contiguousFlightsRest.keySet()) {
+			Flight contiguousFlight = flights.get(contiguousFlightsRest.get(flightId));
+			flights.get(flightId).setContiguousFlight(contiguousFlight);
+		}
 
 		nRunways = flightString.length - 2;
 	}
@@ -210,12 +209,32 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 	}
 
 	@SuppressWarnings("unused")
-	public String getWaitTimesFileName() {
-		return waitTimesFileName;
+	public String getWaitTimesFile() {
+		return waitTimesFile;
 	}
 
 	@SuppressWarnings("unused")
-	public void setWaitTimesFileName(String waitTimesFileName) {
-		this.waitTimesFileName = waitTimesFileName;
+	public void setWaitTimesFile(String waitTimesFile) {
+		this.waitTimesFile = waitTimesFile;
+	}
+
+	@SuppressWarnings("unused")
+	public String getRunwayRestrictionsFile() {
+		return runwayRestrictionsFile;
+	}
+
+	@SuppressWarnings("unused")
+	public void setRunwayRestrictionsFile(String runwayRestrictionsFile) {
+		this.runwayRestrictionsFile = runwayRestrictionsFile;
+	}
+
+	@SuppressWarnings("unused")
+	public String getContiguousFlightsFile() {
+		return contiguousFlightsFile;
+	}
+
+	@SuppressWarnings("unused")
+	public void setContiguousFlightsFile(String contiguousFlightsFile) {
+		this.contiguousFlightsFile = contiguousFlightsFile;
 	}
 }
