@@ -1,8 +1,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% P3b MLP
+% AirTafficController
 % David Miguel Lozano
 % Javier Martínez Riberas
-% Universidad de Burgos - Noviembre 2016
+% Universidad de Burgos - Diciembre 2016
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % -------------------------------------------------------------
@@ -151,14 +151,7 @@ A continuación se detalla la codificación y configuración del problema para s
 
 \subsection{Representación de los individuos}
 
-Para representar los individuos se ha utilizado un array de enteros ordenado (\lstinline|OrderArrayIndividual|). Se probaron dos representaciones diferentes, en ambas cada posición del array representaba un avión, pero el ordenamiento era distinto:
-
-\begin{enumerate}[noitemsep]
-	\item Array ordenado por orden de llegada. De tal manera, que la primera posición se correspondía con el primer avión en llegar. Y el valor de cada posición indicaba el identificador del avión.
-	\item Array ordenado por número de avión. De tal manera, que la primera posición se correspondía con el avión número uno. Y el valor de cada posición indicaba la posición de llegada del avión.
-\end{enumerate}
-
-Tras realizar pruebas, se vió que los resultados eran muy similares. Por lo que se eligió la representación 1 para realizar el estudio.
+Para representar los individuos se ha utilizado un array de enteros ordenado (\lstinline|OrderArrayIndividual|). Cada posición del array representaba un avión y el array estaba ordenado por orden de llegada. De tal manera, que la primera posición se correspondía con el primer avión en llegar y el valor de cada posición indicaba el identificador del avión.
 
 Ejemplo de genotipo:
 
@@ -178,14 +171,19 @@ Se ha utilizado el algoritmo SGE (\textit{Simple Generational and Elitist}). Se 
 
 \subsection{Función de fitness}
 
-Para evaluar los individuos, como el genotipo se encontraba ordenado por orden de llegada, se iba iterando sobre él y planificando cada vuelo. La asignación de la pista se realizaba minimizando el ATA, de tal forma, que se asignaba la primera pista que quedase libre. Por último, el cálculo del fitness se realizó de dos maneras:
+Para evaluar los individuos, como el genotipo se encontraba ordenado por orden de llegada, se iba iterando sobre él y planificando cada vuelo. La asignación de la pista se realizaba minimizando el ATA, de tal forma, que se asignaba la primera pista que quedase libre. Al finalizar la planificación, se comprobaban las restricciones incumplidas.
+
+Por último, el cálculo del fitness se realizó teniendo en cuenta los siguientes parámetros:
 
 \begin{enumerate}[noitemsep]
 	\item Minimizando el retraso acumulado. Es decir, el sumatorio de la diferencia entre el ATA y el mínimo ETA de cada avión.
-	\item Minimizando el instante de llegada del último aterrizaje.
+	\item El número de restricciones de pistas violadas.
+	\item Minimiando el tiempo entre aterrizajes de vuelos asociados. Es decir, la diferencia en valor absoluto de los dos ATAs.
 \end{enumerate}
 
-Se compararon ambos métodos y se vió que arrojaban resultados similares. Sin embargo, el método 2 tenía una varianza mucho más grande que el 1. Por este motivo, se eligió el método 1 para el estudio.
+En la primera parte de la prática, los dos últimos parámetros se implementaron como restricciones débiles. Dando más importancia a la restricción de pistas.
+
+En la segunda parte de la práctica, se ha implementado mediante optimización multiobjetivo, por los que los tres parámetros se han tenido en cuenta por igual.
 
 \subsection{Inicialización}
 
@@ -234,34 +232,34 @@ No se han analizado más algoritmos de reemplazo ya que la librería sólo propo
 
 Para la importación de la librería JCLEC se ha creado una dependencia Maven de esta. Se ha publicado en el siguiente repositorio: \href{https://github.com/davidmigloz/jclec\_maven\_repo}{JCLEC Maven Repository}. 
 
-*Se ha añadido el paquete \lstinline|orderarray| a la versión base de la libería. Ya que, en la versión original sólo se incluye con los ejemplos.
+*Se ha añadido el paquete \lstinline|orderarray| a la versión base de la libería. Ya que, en la versión original sólo se incluye con los ejemplos. Además, se han sustituido las clases con errores por las versiones corregidas proporcionadas con los materiales de la prática.
 
 La aplicación cuenta con las siguientes clases:
 
 \begin{itemize}[noitemsep]
 	\item \lstinline|Run|: permite lanzar la aplicación seleccionando por parámetro el archivo de vuelos deseado.
 	\item \lstinline|AirTrafficController|: implementación del algoritmo genético.
-	\item \lstinline|Airport|: clase que modela un aeropuerto. Posee la lógica para seleccionar la mejor pista para un determinado avión. Además, permite conocer el retraso acumulado o el momento en el que aterrizó el último avión.
-	\item \lstinline|Runway|: clase que modela una pista del aeropuerto. Posee la lógica para calcular cuando estará libre para que aterrice un determinado tipo de avión.
-	\item \lstinline|Flight|: clase que modela una vuelo. Posee la lógica para calcular el retraso que tuvo.
+	\item \lstinline|Airport|: clase que modela un aeropuerto. Posee la lógica para seleccionar la mejor pista para un determinado avión. Además, permite conocer el retraso acumulado, el momento en el que aterrizó el último avión, el total de restricciones de pista violadas y el acumulado del retraso de aviones asociados.
+	\item \lstinline|Runway|: clase que modela una pista del aeropuerto. Posee la lógica para calcular cuando estará libre para que aterrice un determinado tipo de avión y conocer cuantas veces se ha violado la restricción de pista.
+	\item \lstinline|Flight|: clase que modela una vuelo. Posee la lógica para calcular el retraso que tuvo y el del vuelo asociado si existiese.
 \end{itemize}
 
 
 \section{Resultados}
 
-A continuación exponemos los resultados obtenidos.
+No fuimos capaces de ejecutar nuestros experimentos con VisualJCLEC. Después de configurar todo correctamente (o al menos cómo lo hicimos en la prática anterior), al ejecutar el experimento obteníamos siempre un \lstinline|NullPointerException| proveniente de su clase \lstinline|RunExperiment|. Tras perder unas cuantas horas intentado localizar la fuente del error, no fuimos capaces de encontralo.
 
-Todos los gráficos y logs generados se encuentran disponibles en: \href{https://github.com/davidmigloz/evolutionary-computation/tree/master/P1\_AirTafficController/data}{Data}.
+Las dos versiones de la práctica se encuentran implementadas y funcionan correctamente si se ejecutan sin VisualJCLEC. 
 
-TODO
+El tiempo perdido con VisualJCLEC unido a las malas fechas en las que nos encontramos, nos impidieron analizar los resultados obtenidos y completar así la practica.
 
 \section{Análisis}
 
-TODO
+Desafortunadamente no se tuvo tiempo para analizar los resultados.
 	 
 \section{Conclusiones}
 
-TODO
+Sin analizar los resultados no podemos sacar conclusiones de las implementaciones realizadas. 
 
 % -------------------------------------------------------------
 % Bibliography

@@ -76,7 +76,7 @@ public class Airport {
      * @param after  segundo avión en aterrizar.
      * @return tiempo que el segundo tiene que esperar.
      */
-    public int getWaitingTime(Flight.PlaneType before, Flight.PlaneType after) {
+    int getWaitingTime(Flight.PlaneType before, Flight.PlaneType after) {
         return waitingTimes[before.getIndex()][after.getIndex()];
     }
 
