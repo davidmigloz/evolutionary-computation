@@ -110,8 +110,8 @@ public class AirTrafficController extends AbstractEvaluator implements IConfigur
 		}
 		// Calculate fitness
 		ind.setFitness(new SimpleValueFitness(
-				airport.getAccumulatedDelay() 
-						+ airport.getAccumulatedRunwayRestrictionViolations()
+				airport.getAccumulatedDelay()
+						+ airport.getAccumulatedRunwayRestrictionViolations()*100
 						+ airport.getAccumulatedConsecutiveFlightRestriction()));
 		// Log last landing
 		logger.debug(Arrays.toString(genotype) + ":" + airport.getMaxATA());
