@@ -1,0 +1,127 @@
+Wed Dec 14 16.31.06 CET 2016
+Generation 0 Report
+Best individual: OrderArrayIndividual {genotype = (18 9 12 15 13 20 21 10 19 7 8 4 22 3 11 14 2 17 16 5 0 6 1 23), fitness = net.sf.jclec.fitness.SimpleValueFitness@5e7cd6cc[value=371.0]}
+Worst individual: OrderArrayIndividual {genotype = (1 8 2 15 3 14 5 0 19 18 21 12 11 9 6 13 16 4 22 20 7 17 10 23), fitness = net.sf.jclec.fitness.SimpleValueFitness@68c9d179[value=753.0]}
+Median individual: OrderArrayIndividual {genotype = (15 0 3 13 10 22 12 16 17 4 14 20 21 9 8 1 11 5 7 2 19 18 6 23), fitness = net.sf.jclec.fitness.SimpleValueFitness@d554c5f[value=457.0]}
+Average fitness = 547.99
+Fitness variance = 6274.509900000005
+Generation 50 Report
+Best individual: OrderArrayIndividual {genotype = (11 21 0 4 22 20 3 18 9 15 13 2 19 17 12 1 14 16 7 5 10 8 6 23), fitness = net.sf.jclec.fitness.SimpleValueFitness@2dfaea86[value=430.0]}
+Worst individual: OrderArrayIndividual {genotype = (6 15 8 21 13 7 3 9 20 17 12 14 19 16 22 18 10 2 1 4 11 0 5 23), fitness = net.sf.jclec.fitness.SimpleValueFitness@15888343[value=794.0]}
+Median individual: OrderArrayIndividual {genotype = (6 2 8 1 22 7 16 9 5 15 13 17 20 19 0 18 12 3 21 4 11 10 14 23), fitness = net.sf.jclec.fitness.SimpleValueFitness@33ecda92[value=645.0]}
+Average fitness = 647.03
+Fitness variance = 6680.4291000000085
+Generation 100 Report
+Best individual: OrderArrayIndividual {genotype = (12 21 0 20 11 16 18 22 10 1 9 3 7 19 8 13 2 17 15 4 6 14 5 23), fitness = net.sf.jclec.fitness.SimpleValueFitness@14fc5f04[value=462.0]}
+Worst individual: OrderArrayIndividual {genotype = (6 1 11 2 5 8 19 3 4 22 9 23 0 10 17 16 14 20 12 13 15 21 18 7), fitness = net.sf.jclec.fitness.SimpleValueFitness@6e2829c7[value=734.0]}
+Median individual: OrderArrayIndividual {genotype = (15 23 2 1 22 0 5 21 14 10 7 8 17 19 6 16 13 11 18 20 4 12 9 3), fitness = net.sf.jclec.fitness.SimpleValueFitness@3feb2dda[value=643.0]}
+Average fitness = 628.11
+Fitness variance = 3687.5778999999748
+Generation 150 Report
+Best individual: OrderArrayIndividual {genotype = (16 4 5 21 13 18 23 14 6 11 10 2 8 22 3 17 9 19 0 15 7 20 1 12), fitness = net.sf.jclec.fitness.SimpleValueFitness@6a8658ff[value=486.0]}
+Worst individual: OrderArrayIndividual {genotype = (6 8 22 1 11 3 2 7 13 0 16 14 5 19 20 4 18 10 12 15 21 23 9 17), fitness = net.sf.jclec.fitness.SimpleValueFitness@1c742ed4[value=755.0]}
+Median individual: OrderArrayIndividual {genotype = (19 15 13 8 16 7 14 21 4 0 6 2 20 5 1 17 18 10 12 22 9 23 11 3), fitness = net.sf.jclec.fitness.SimpleValueFitness@333d4a8c[value=707.0]}
+Average fitness = 618.2
+Fitness variance = 3268.4199999999255
+Generation 200 Report
+Best individual: OrderArrayIndividual {genotype = (17 9 10 18 7 6 11 23 0 16 22 5 15 13 14 21 1 12 20 2 8 4 19 3), fitness = net.sf.jclec.fitness.SimpleValueFitness@55de24cc[value=454.0]}
+Worst individual: OrderArrayIndividual {genotype = (2 6 16 8 21 15 13 22 5 9 11 0 12 20 19 10 4 14 17 18 7 1 3 23), fitness = net.sf.jclec.fitness.SimpleValueFitness@dc7df28[value=749.0]}
+Median individual: OrderArrayIndividual {genotype = (2 21 0 8 7 22 10 9 19 11 15 20 13 23 16 4 17 12 5 14 18 1 6 3), fitness = net.sf.jclec.fitness.SimpleValueFitness@30f842ca[value=698.0]}
+Average fitness = 645.02
+Fitness variance = 3429.73960000003
+Generation 250 Report
+Best individual: OrderArrayIndividual {genotype = (5 4 15 16 14 1 18 22 20 11 7 9 13 0 2 12 10 8 3 21 6 19 17 23), fitness = net.sf.jclec.fitness.SimpleValueFitness@69c81773[value=519.0]}
+Worst individual: OrderArrayIndividual {genotype = (12 11 2 8 23 22 16 0 4 18 7 19 9 6 21 15 20 14 1 13 5 10 3 17), fitness = net.sf.jclec.fitness.SimpleValueFitness@4d14b6c2[value=783.0]}
+Median individual: OrderArrayIndividual {genotype = (12 3 21 2 5 13 8 4 1 22 7 19 18 6 11 17 0 15 20 9 14 10 16 23), fitness = net.sf.jclec.fitness.SimpleValueFitness@7e990ed7[value=674.0]}
+Average fitness = 636.14
+Fitness variance = 4060.2604000000283
+Generation 300 Report
+Best individual: OrderArrayIndividual {genotype = (23 19 2 9 10 0 14 4 18 16 7 17 1 5 3 15 12 22 11 20 13 6 21 8), fitness = net.sf.jclec.fitness.SimpleValueFitness@c05fddc[value=575.0]}
+Worst individual: OrderArrayIndividual {genotype = (2 8 1 21 9 0 3 23 18 6 16 7 19 17 20 14 11 4 12 5 10 22 15 13), fitness = net.sf.jclec.fitness.SimpleValueFitness@25df00a0[value=802.0]}
+Median individual: OrderArrayIndividual {genotype = (0 8 22 4 18 19 3 15 2 1 9 7 10 20 16 23 6 14 5 12 17 13 21 11), fitness = net.sf.jclec.fitness.SimpleValueFitness@4d15107f[value=629.0]}
+Average fitness = 711.34
+Fitness variance = 3525.324399999925
+Generation 350 Report
+Best individual: OrderArrayIndividual {genotype = (17 10 16 21 6 8 18 14 13 7 3 0 19 22 11 4 1 20 23 12 5 2 9 15), fitness = net.sf.jclec.fitness.SimpleValueFitness@7b4c50bc[value=543.0]}
+Worst individual: OrderArrayIndividual {genotype = (6 8 18 21 9 12 23 13 3 11 0 14 1 20 10 16 5 19 22 2 7 17 15 4), fitness = net.sf.jclec.fitness.SimpleValueFitness@5884a914[value=784.0]}
+Median individual: OrderArrayIndividual {genotype = (10 8 6 1 11 23 14 4 17 20 16 13 0 19 7 22 5 9 12 2 18 15 21 3), fitness = net.sf.jclec.fitness.SimpleValueFitness@50378a4[value=729.0]}
+Average fitness = 695.13
+Fitness variance = 3032.473100000003
+Generation 400 Report
+Best individual: OrderArrayIndividual {genotype = (13 8 9 0 5 17 12 2 18 14 10 3 20 22 7 23 16 4 11 1 15 19 21 6), fitness = net.sf.jclec.fitness.SimpleValueFitness@60f00693[value=564.0]}
+Worst individual: OrderArrayIndividual {genotype = (2 8 17 1 23 21 9 4 20 5 14 19 7 0 10 16 18 15 3 13 6 12 11 22), fitness = net.sf.jclec.fitness.SimpleValueFitness@79207381[value=800.0]}
+Median individual: OrderArrayIndividual {genotype = (13 8 9 12 11 1 5 2 21 18 10 19 6 3 22 7 14 15 16 0 23 20 4 17), fitness = net.sf.jclec.fitness.SimpleValueFitness@491b9b8[value=600.0]}
+Average fitness = 705.66
+Fitness variance = 3219.8644000000786
+Generation 450 Report
+Best individual: OrderArrayIndividual {genotype = (16 8 5 9 7 1 2 4 11 3 10 19 6 0 17 18 21 15 13 22 20 14 12 23), fitness = net.sf.jclec.fitness.SimpleValueFitness@1a4927d6[value=559.0]}
+Worst individual: OrderArrayIndividual {genotype = (2 8 11 22 16 7 14 18 4 9 13 15 3 5 23 12 19 0 10 20 6 17 1 21), fitness = net.sf.jclec.fitness.SimpleValueFitness@7a6d7e92[value=807.0]}
+Median individual: OrderArrayIndividual {genotype = (0 8 4 1 19 9 2 20 16 21 18 23 3 22 10 13 11 15 14 5 12 6 17 7), fitness = net.sf.jclec.fitness.SimpleValueFitness@aba625[value=627.0]}
+Average fitness = 700.83
+Fitness variance = 2742.181099999929
+Generation 500 Report
+Best individual: OrderArrayIndividual {genotype = (16 8 13 5 14 18 20 7 4 3 9 12 6 19 10 15 11 2 21 22 1 17 23 0), fitness = net.sf.jclec.fitness.SimpleValueFitness@97e93f1[value=518.0]}
+Worst individual: OrderArrayIndividual {genotype = (2 8 16 0 23 20 6 4 18 7 1 13 21 19 5 10 11 22 15 14 9 3 12 17), fitness = net.sf.jclec.fitness.SimpleValueFitness@5a5a729f[value=785.0]}
+Median individual: OrderArrayIndividual {genotype = (20 8 6 5 23 16 1 12 17 22 0 10 7 19 2 13 11 4 15 21 14 18 9 3), fitness = net.sf.jclec.fitness.SimpleValueFitness@4b520ea8[value=700.0]}
+Average fitness = 706.8
+Fitness variance = 2510.600000000093
+Generation 550 Report
+Best individual: OrderArrayIndividual {genotype = (4 8 20 14 10 3 19 21 9 0 13 15 12 16 7 5 11 1 6 2 22 18 23 17), fitness = net.sf.jclec.fitness.SimpleValueFitness@16150369[value=573.0]}
+Worst individual: OrderArrayIndividual {genotype = (6 8 15 3 13 7 0 18 22 11 2 19 14 21 4 12 20 9 17 1 5 16 10 23), fitness = net.sf.jclec.fitness.SimpleValueFitness@6b09fb41[value=799.0]}
+Median individual: OrderArrayIndividual {genotype = (6 8 15 3 13 7 0 18 22 11 2 19 14 21 4 12 20 9 17 1 5 16 10 23), fitness = net.sf.jclec.fitness.SimpleValueFitness@6b09fb41[value=799.0]}
+Average fitness = 691.63
+Fitness variance = 2030.1731000000145
+Generation 600 Report
+Best individual: OrderArrayIndividual {genotype = (4 16 9 23 19 3 18 6 5 21 12 15 10 1 8 13 0 17 20 22 7 14 11 2), fitness = net.sf.jclec.fitness.SimpleValueFitness@624ea235[value=488.0]}
+Worst individual: OrderArrayIndividual {genotype = (21 8 2 4 17 15 14 18 1 10 9 22 16 19 5 13 0 3 23 7 12 11 20 6), fitness = net.sf.jclec.fitness.SimpleValueFitness@3932c79a[value=789.0]}
+Median individual: OrderArrayIndividual {genotype = (1 8 23 9 14 3 18 6 16 21 12 15 10 4 5 13 0 17 20 22 7 19 11 2), fitness = net.sf.jclec.fitness.SimpleValueFitness@782859e[value=729.0]}
+Average fitness = 687.91
+Fitness variance = 2614.4419000000344
+Generation 650 Report
+Best individual: OrderArrayIndividual {genotype = (22 5 2 19 17 9 0 3 6 8 13 16 18 1 20 23 15 7 10 11 21 12 4 14), fitness = net.sf.jclec.fitness.SimpleValueFitness@23f5b5dc[value=554.0]}
+Worst individual: OrderArrayIndividual {genotype = (2 8 18 16 23 6 9 21 12 5 17 19 4 13 14 0 7 22 20 11 3 1 10 15), fitness = net.sf.jclec.fitness.SimpleValueFitness@34bde49d[value=793.0]}
+Median individual: OrderArrayIndividual {genotype = (14 8 3 23 10 9 2 6 0 17 16 19 5 22 11 13 12 18 15 21 7 4 1 20), fitness = net.sf.jclec.fitness.SimpleValueFitness@1b1cfb87[value=723.0]}
+Average fitness = 703.18
+Fitness variance = 2659.047600000049
+Generation 700 Report
+Best individual: OrderArrayIndividual {genotype = (22 17 1 12 9 13 6 14 15 7 16 20 10 3 0 5 11 21 19 8 2 23 4 18), fitness = net.sf.jclec.fitness.SimpleValueFitness@821330f[value=493.0]}
+Worst individual: OrderArrayIndividual {genotype = (2 8 0 23 21 6 1 16 20 22 10 5 19 9 4 17 7 18 3 13 15 12 14 11), fitness = net.sf.jclec.fitness.SimpleValueFitness@6f43c82[value=792.0]}
+Median individual: OrderArrayIndividual {genotype = (21 8 6 0 14 12 11 1 9 15 23 13 19 16 4 5 3 10 18 2 20 22 7 17), fitness = net.sf.jclec.fitness.SimpleValueFitness@5db6b9cd[value=714.0]}
+Average fitness = 714.42
+Fitness variance = 3526.703600000066
+Generation 750 Report
+Best individual: OrderArrayIndividual {genotype = (21 9 4 20 0 15 3 1 2 11 17 10 19 6 13 16 8 14 12 22 5 23 7 18), fitness = net.sf.jclec.fitness.SimpleValueFitness@210ab13f[value=487.0]}
+Worst individual: OrderArrayIndividual {genotype = (2 8 16 19 5 21 18 23 13 4 14 12 1 22 6 11 9 20 10 17 3 15 7 0), fitness = net.sf.jclec.fitness.SimpleValueFitness@20b2475a[value=802.0]}
+Median individual: OrderArrayIndividual {genotype = (10 8 1 6 12 4 19 2 5 16 17 3 20 22 7 0 13 11 14 15 23 21 9 18), fitness = net.sf.jclec.fitness.SimpleValueFitness@7857fe2[value=692.0]}
+Average fitness = 690.47
+Fitness variance = 2602.449099999969
+Generation 800 Report
+Best individual: OrderArrayIndividual {genotype = (13 8 16 5 22 14 12 7 20 21 15 19 10 18 23 4 9 6 0 3 1 17 2 11), fitness = net.sf.jclec.fitness.SimpleValueFitness@6f15d60e[value=533.0]}
+Worst individual: OrderArrayIndividual {genotype = (2 8 5 6 23 11 20 10 21 12 19 0 18 16 22 1 14 7 9 4 17 13 3 15), fitness = net.sf.jclec.fitness.SimpleValueFitness@1be2019a[value=786.0]}
+Median individual: OrderArrayIndividual {genotype = (2 8 20 18 14 1 10 19 6 21 3 16 12 15 11 5 22 0 23 17 9 7 4 13), fitness = net.sf.jclec.fitness.SimpleValueFitness@29d80d2b[value=733.0]}
+Average fitness = 711.89
+Fitness variance = 2191.39790000004
+Generation 850 Report
+Best individual: OrderArrayIndividual {genotype = (11 8 18 15 20 22 17 12 0 21 16 23 19 9 3 7 14 2 13 4 10 6 5 1), fitness = net.sf.jclec.fitness.SimpleValueFitness@58e1d9d[value=561.0]}
+Worst individual: OrderArrayIndividual {genotype = (2 8 11 16 5 20 6 4 23 22 14 18 12 0 1 9 13 15 3 17 7 10 21 19), fitness = net.sf.jclec.fitness.SimpleValueFitness@446a1e84[value=832.0]}
+Median individual: OrderArrayIndividual {genotype = (20 8 3 22 18 14 19 6 5 16 12 9 13 23 1 21 7 17 2 0 11 4 10 15), fitness = net.sf.jclec.fitness.SimpleValueFitness@4f0f2942[value=721.0]}
+Average fitness = 707.93
+Fitness variance = 3291.5851000000257
+Generation 900 Report
+Best individual: OrderArrayIndividual {genotype = (4 18 15 7 1 11 14 19 2 8 5 20 3 9 12 0 22 13 21 6 17 23 16 10), fitness = net.sf.jclec.fitness.SimpleValueFitness@2657d4dd[value=502.0]}
+Worst individual: OrderArrayIndividual {genotype = (3 8 11 7 18 15 17 10 14 1 2 22 19 9 13 0 4 12 21 6 5 23 16 20), fitness = net.sf.jclec.fitness.SimpleValueFitness@5340477f[value=773.0]}
+Median individual: OrderArrayIndividual {genotype = (21 8 12 11 22 23 14 9 18 1 2 10 3 7 20 17 16 0 15 4 5 19 6 13), fitness = net.sf.jclec.fitness.SimpleValueFitness@47caedad[value=624.0]}
+Average fitness = 690.74
+Fitness variance = 2990.1723999999813
+Generation 950 Report
+Best individual: OrderArrayIndividual {genotype = (16 8 14 4 19 17 3 9 10 12 18 15 11 2 22 23 13 1 0 21 5 20 7 6), fitness = net.sf.jclec.fitness.SimpleValueFitness@7139992f[value=579.0]}
+Worst individual: OrderArrayIndividual {genotype = (2 8 18 6 7 17 3 23 0 11 15 4 9 10 22 14 13 16 5 21 19 1 20 12), fitness = net.sf.jclec.fitness.SimpleValueFitness@69504ae9[value=775.0]}
+Median individual: OrderArrayIndividual {genotype = (4 8 20 0 19 11 23 14 2 5 7 18 10 12 3 17 22 16 6 21 13 15 1 9), fitness = net.sf.jclec.fitness.SimpleValueFitness@387a8303[value=624.0]}
+Average fitness = 685.54
+Fitness variance = 2459.908400000073
+Generation 1000 Report
+Best individual: OrderArrayIndividual {genotype = (15 8 7 5 13 9 11 6 12 10 3 1 4 21 20 16 18 0 22 14 2 19 17 23), fitness = net.sf.jclec.fitness.SimpleValueFitness@28cda624[value=609.0]}
+Worst individual: OrderArrayIndividual {genotype = (2 8 21 20 13 9 11 15 14 5 6 3 19 1 22 18 17 0 23 4 7 12 10 16), fitness = net.sf.jclec.fitness.SimpleValueFitness@1500b2f3[value=795.0]}
+Median individual: OrderArrayIndividual {genotype = (11 8 7 6 1 19 9 5 10 12 3 13 4 21 20 16 15 0 22 14 2 18 17 23), fitness = net.sf.jclec.fitness.SimpleValueFitness@7eecb5b8[value=701.0]}
+Average fitness = 712.65
+Fitness variance = 1910.927500000049
