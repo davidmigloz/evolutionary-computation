@@ -118,10 +118,9 @@
 
 \section{Introducción}
 
-El objetivo de esta práctica es desarollar un programa que implemente un algoritmo genético que permita al usuario realizar el calculo automático de la distribución
-más conveniente de vuelos que solicitan aterrizar en un determinado aeropuerto sujetos a varias restricciones. Se experimentará modelando el problema con restricciones débiles y empleando optimización multi-objetivo. Así mismo, se analizará la conveniencia de la solución propuesta y se reflexionará sobre los resultados obtenidos.
+El objetivo de esta práctica es desarrollar un programa que implemente un algoritmo genético que permita al usuario realizar el cálculo automático de la distribución más conveniente de vuelos que solicitan aterrizar en un determinado aeropuerto sujetos a varias restricciones. Se experimentará modelando el problema con restricciones débiles y empleando optimización multi-objetivo. Así mismo, se analizará la conveniencia de la solución propuesta y se reflexionará sobre los resultados obtenidos.
 
-La aplicación tiene que ser capáz de adaptarse a las siguientes condiciones:
+La aplicación tiene que ser capaz de adaptarse a las siguientes condiciones:
 
 \begin{itemize}[noitemsep]
 	\item El número de pistas del aeropuerto debe ser un parámetro configurable.
@@ -178,12 +177,12 @@ Por último, el cálculo del fitness se realizó teniendo en cuenta los siguient
 \begin{enumerate}[noitemsep]
 	\item Minimizando el retraso acumulado. Es decir, el sumatorio de la diferencia entre el ATA y el mínimo ETA de cada avión.
 	\item El número de restricciones de pistas violadas.
-	\item Minimiando el tiempo entre aterrizajes de vuelos asociados. Es decir, la diferencia en valor absoluto de los dos ATAs.
+	\item Minimizando el tiempo entre aterrizajes de vuelos asociados. Es decir, la diferencia en valor absoluto de los dos ATAs.
 \end{enumerate}
 
-En la primera parte de la prática, los dos últimos parámetros se implementaron como restricciones débiles. Dando más importancia a la restricción de pistas.
+En la primera parte de la práctica, los dos últimos parámetros se implementaron como restricciones débiles. Dando más importancia a la restricción de pistas.
 
-En la segunda parte de la práctica, se ha implementado mediante optimización multiobjetivo, por los que los tres parámetros se han tenido en cuenta por igual.
+En la segunda parte de la práctica, se ha implementado mediante optimización multi-objetivo, por los que los tres parámetros se han tenido en cuenta por igual.
 
 \subsection{Inicialización}
 
@@ -224,7 +223,7 @@ Cada gen del genotipo de un individuo tiene, por defecto, un 3\% de probabilidad
 
 \subsection{Criterio de reemplazo}
 
-Se ha utilizado \lstinline|OrderArrayCreator|, mediante el cual, los hijos reemplazan directamente a los padres. Para preservar el elitismo, si la mejor sulución de la generación anterior no sobrevive, la peor solución se reemplaza por una nueva.
+Se ha utilizado \lstinline|OrderArrayCreator|, mediante el cual, los hijos reemplazan directamente a los padres. Para preservar el elitismo, si la mejor solución de la generación anterior no sobrevive, la peor solución se reemplaza por una nueva.
 
 No se han analizado más algoritmos de reemplazo ya que la librería sólo proporciona este para trabajar con \lstinline|OrderArrayIndividual|.
 
@@ -232,7 +231,7 @@ No se han analizado más algoritmos de reemplazo ya que la librería sólo propo
 
 Para la importación de la librería JCLEC se ha creado una dependencia Maven de esta. Se ha publicado en el siguiente repositorio: \href{https://github.com/davidmigloz/jclec\_maven\_repo}{JCLEC Maven Repository}. 
 
-*Se ha añadido el paquete \lstinline|orderarray| a la versión base de la libería. Ya que, en la versión original sólo se incluye con los ejemplos. Además, se han sustituido las clases con errores por las versiones corregidas proporcionadas con los materiales de la prática.
+*Se ha añadido el paquete \lstinline|orderarray| a la versión base de la librería. Ya que, en la versión original sólo se incluye con los ejemplos. Además, se han sustituido las clases con errores por las versiones corregidas proporcionadas con los materiales de la práctica.
 
 La aplicación cuenta con las siguientes clases:
 
@@ -240,26 +239,26 @@ La aplicación cuenta con las siguientes clases:
 	\item \lstinline|Run|: permite lanzar la aplicación seleccionando por parámetro el archivo de vuelos deseado.
 	\item \lstinline|AirTrafficController|: implementación del algoritmo genético.
 	\item \lstinline|Airport|: clase que modela un aeropuerto. Posee la lógica para seleccionar la mejor pista para un determinado avión. Además, permite conocer el retraso acumulado, el momento en el que aterrizó el último avión, el total de restricciones de pista violadas y el acumulado del retraso de aviones asociados.
-	\item \lstinline|Runway|: clase que modela una pista del aeropuerto. Posee la lógica para calcular cuando estará libre para que aterrice un determinado tipo de avión y conocer cuantas veces se ha violado la restricción de pista.
+	\item \lstinline|Runway|: clase que modela una pista del aeropuerto. Posee la lógica para calcular cuando estará libre para que aterrice un determinado tipo de avión y conocer cuántas veces se ha violado la restricción de pista.
 	\item \lstinline|Flight|: clase que modela una vuelo. Posee la lógica para calcular el retraso que tuvo y el del vuelo asociado si existiese.
 \end{itemize}
 
 
 \section{Resultados}
 
-No fuimos capaces de ejecutar nuestros experimentos con VisualJCLEC. Después de configurar todo correctamente (o al menos cómo lo hicimos en la prática anterior), al ejecutar el experimento obteníamos siempre un \lstinline|NullPointerException| proveniente de su clase \lstinline|RunExperiment|. Tras perder unas cuantas horas intentado localizar la fuente del error, no fuimos capaces de encontralo.
+Los resultados de los distintos experimentos realizados con la primera implementación se encuentran disponibles en el repositorio: \href{https://github.com/davidmigloz/evolutionary-computation/tree/p5a/P1\_AirTafficController/data}{Data}. 
 
-Las dos versiones de la práctica se encuentran implementadas y funcionan correctamente si se ejecutan sin VisualJCLEC. 
+No fuimos capaces de ejecutar nuestros experimentos con VisualJCLEC. Después de configurar todo correctamente (o al menos cómo lo hicimos en la prática anterior), al ejecutar el experimento obteníamos siempre un \lstinline|NullPointerException| proveniente de su clase \lstinline|RunExperiment|. Tras perder unas cuantas horas intentado localizar la fuente del error, no fuimos capaces de encontrarlo.
 
-El tiempo perdido con VisualJCLEC unido a las malas fechas en las que nos encontramos, nos impidieron analizar los resultados obtenidos y completar así la practica.
+El tiempo perdido con VisualJCLEC unido a las malas fechas en las que nos encontramos, nos impidieron recopilar los resultados de la segunda implementación (que sí que se ha implementado), así como el análisis de estos para completar así la práctica.
 
 \section{Análisis}
 
-Desafortunadamente no se tuvo tiempo para analizar los resultados.
+Desafortunadamente no se tuvo tiempo para analizar a detalle los resultados obtenidos. Sí que se observó que la varianza seguía siendo muy elevada y que el peor caso seguía sin reducirse según avanzaban las generaciones.
 	 
 \section{Conclusiones}
 
-Sin analizar los resultados no podemos sacar conclusiones de las implementaciones realizadas. 
+Sin analizar profundamente los resultados no podemos sacar grandes conclusiones de las implementaciones realizadas. Pero a grandes rasgos, nos ha parecido que la forma en que hemos codificado el problema (utilizando un \lstinline|OrderArrayIndividual|) no ha sido la óptima para ser resuelta con algoritmos genéticos.
 
 % -------------------------------------------------------------
 % Bibliography
